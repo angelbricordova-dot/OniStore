@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+.env*
+!.env.example
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+.taste-skill
+# datos locales de desarrollo (en producción viven en Vercel Blob)
+data/catalog.local.json
+data/versions
+public/uploads
