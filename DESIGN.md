@@ -124,7 +124,7 @@ Tres paletas (Luna, Lavanda, Durazno), cada una con fondo, fondo alterno, tinta,
 
 ## Día y noche
 
-- **Día:** un cielo detrás de todo. Arriba un degradado suave del color de la paleta, un sol pequeño con un halo que respira, cinco nubes que cruzan muy despacio (de 3,5 a 5 minutos cada una) y motas de luz que suben como polvo en un rayo de sol. Al bajar por la página el sol desciende y el cielo se vuelve atardecer, hasta ponerse detrás del pie de página: la página va del día a la noche, como el cliente.
+- **Día:** un cielo detrás de todo. Arriba un degradado suave del color de la paleta, un sol pequeño con un halo que respira, cinco nubes que cruzan muy despacio (de 3,5 a 5 minutos cada una) y motas de luz que suben como polvo en un rayo de sol. Al bajar por la página el sol baja en línea recta y a ritmo parejo, el cielo pasa por el atardecer y al final queda de noche, con estrellas: la página va del día a la noche, como el cliente. Lo lleva `DayCycle` según el scroll; a partir de un tercio de la página el texto y las tarjetas pasan a colores de noche con un fundido (`data-tono`), mientras `data-modo` guarda lo que eligió el visitante.
 - **Noche:** el cielo de estrellas descrito abajo.
 
 - El botón de la barra (sol/luna) cambia el modo con un círculo que se expande desde el botón (View Transitions) y recuerda la elección de cada visitante.
@@ -161,7 +161,7 @@ El logo no es definitivo. Tres propuestas, sin estrellas ni pestañas, todas con
 
 ## Layout
 
-Contenedor de 1080px centrado, con márgenes laterales de clamp(20px, 4vw, 32px) y secciones separadas por clamp(84px, 10vw, 140px). Los títulos van centrados con su frase debajo. Las categorías son mosaicos de 2 columnas (1 en teléfono) y la colección es una cuadrícula de 3 columnas (2 en teléfono). Por debajo de 760px la navegación se reduce a logo y bolsa.
+Contenedor de 1080px centrado, con márgenes laterales de clamp(20px, 4vw, 32px) y secciones separadas por clamp(84px, 10vw, 140px). Los títulos van centrados con su frase debajo. Las categorías son mosaicos de 2 columnas; en el teléfono, filas horizontales compactas (texto a la izquierda, dibujo a la derecha) y la colección es una cuadrícula de 3 columnas (2 en teléfono). Por debajo de 760px la navegación se reduce a logo y bolsa.
 
 ## Elevation & Depth
 

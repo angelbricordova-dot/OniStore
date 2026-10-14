@@ -19,7 +19,11 @@ export function ModeToggle() {
     if (!site) return;
     const next: Mode = site.dataset.modo === "oscuro" ? "claro" : "oscuro";
     const apply = () => {
+      // Durante el cambio con círculo, los colores cambian de golpe (el círculo ya es la transición).
+      site.dataset.instant = "";
+      window.setTimeout(() => delete site.dataset.instant, 900);
       site.dataset.modo = next;
+      site.dataset.tono = next;
       setMode(next);
       try {
         localStorage.setItem(MODE_KEY, next);

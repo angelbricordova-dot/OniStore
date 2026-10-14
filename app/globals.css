@@ -50,6 +50,78 @@
   --glow-b: #ffe9dc;
 }
 
+/* Colores registrados para que el cambio de día a noche al bajar sea un fundido, no un salto. */
+@property --bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --bg-alt {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --surface {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --ink-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --line {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --accent-hover {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --accent-ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --accent-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --nav-bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --glow-a {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --glow-b {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --plate {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
 .site,
 .lost {
   background: var(--bg);
@@ -95,7 +167,7 @@
 
 /* ---------- Modo noche ---------- */
 
-.site[data-modo="oscuro"] {
+.site[data-tono="oscuro"] {
   --bg: #07071c;
   --bg-alt: #111130;
   --surface: #17173d;
@@ -112,7 +184,7 @@
   --glow-b: rgba(56, 18, 92, 0.5);
   color-scheme: dark;
 }
-.site[data-modo="oscuro"][data-paleta="lavanda"] {
+.site[data-tono="oscuro"][data-paleta="lavanda"] {
   --bg: #0b0820;
   --bg-alt: #161131;
   --surface: #1e1840;
@@ -126,7 +198,7 @@
   --glow-a: rgba(120, 70, 190, 0.35);
   --glow-b: rgba(56, 18, 92, 0.45);
 }
-.site[data-modo="oscuro"][data-paleta="durazno"] {
+.site[data-tono="oscuro"][data-paleta="durazno"] {
   --bg: #0f0a1c;
   --bg-alt: #1a1228;
   --surface: #221934;
@@ -140,10 +212,10 @@
   --glow-a: rgba(249, 92, 66, 0.28);
   --glow-b: rgba(161, 19, 112, 0.3);
 }
-.site[data-modo="oscuro"] .plate {
+.site[data-tono="oscuro"] .plate {
   --plate: var(--plate-d, var(--bg-alt));
 }
-.site[data-modo="oscuro"] .plate::before {
+.site[data-tono="oscuro"] .plate::before {
   background: radial-gradient(70% 60% at 50% 30%, rgba(255, 255, 255, 0.08), transparent 70%);
 }
 
@@ -153,8 +225,26 @@
   position: relative;
   isolation: isolate;
   transition:
-    background-color 500ms ease,
-    color 500ms ease;
+    --bg 700ms ease,
+    --bg-alt 700ms ease,
+    --surface 700ms ease,
+    --ink 700ms ease,
+    --ink-2 700ms ease,
+    --line 700ms ease,
+    --accent 700ms ease,
+    --accent-hover 700ms ease,
+    --accent-ink 700ms ease,
+    --accent-soft 700ms ease,
+    --nav-bg 700ms ease,
+    --glow-a 700ms ease,
+    --glow-b 700ms ease;
+}
+.plate {
+  transition: --plate 700ms ease;
+}
+.site[data-instant],
+.site[data-instant] .plate {
+  transition: none;
 }
 .stars {
   position: fixed;
@@ -172,7 +262,7 @@
   position: absolute;
   inset: 0;
 }
-.site[data-modo="oscuro"] .stars {
+.site[data-tono="oscuro"] .stars {
   opacity: 1;
   visibility: visible;
   transition: opacity 1200ms ease;
@@ -185,7 +275,7 @@
 .star--gold {
   fill: #ffbf42;
 }
-.site[data-modo="oscuro"] .star {
+.site[data-tono="oscuro"] .star {
   animation:
     star-in 1100ms var(--ease-out) calc(var(--i) * 9ms) both,
     twinkle var(--dur) ease-in-out calc(var(--delay) + 1.2s) infinite;
@@ -207,10 +297,10 @@
   left: 30%;
   width: 110px;
 }
-.site[data-modo="oscuro"] .shooting--1 {
+.site[data-tono="oscuro"] .shooting--1 {
   animation: shoot 15s ease-in 4s infinite;
 }
-.site[data-modo="oscuro"] .shooting--2 {
+.site[data-tono="oscuro"] .shooting--2 {
   animation: shoot 23s ease-in 11s infinite;
 }
 @keyframes star-in {
@@ -248,7 +338,7 @@
 }
 
 /* En modo noche las superficies dejan ver un poco el cielo. */
-.site[data-modo="oscuro"][data-estrellas="true"] {
+.site[data-tono="oscuro"][data-estrellas="true"] {
   background: var(--bg);
 }
 
@@ -1493,8 +1583,8 @@ s {
 .picker__error {
   color: #d70015;
 }
-.site[data-modo="oscuro"] .picker__field[data-error="true"] legend span,
-.site[data-modo="oscuro"] .picker__error {
+.site[data-tono="oscuro"] .picker__field[data-error="true"] legend span,
+.site[data-tono="oscuro"] .picker__error {
   color: #ff6961;
 }
 .picker__error {
@@ -1808,16 +1898,50 @@ s {
   .hero__art {
     inset: 10% 8%;
   }
+  /* En el teléfono cada categoría es una fila: texto a la izquierda, dibujo a la derecha. */
   .tiles {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
   .tile {
-    min-height: 460px;
-    padding-top: 36px;
-    border-radius: 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 40%;
+    align-items: center;
+    min-height: 0;
+    height: 148px;
+    padding: 0 0 0 22px;
+    border-radius: 22px;
+    text-align: left;
+  }
+  .tile__copy {
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .tile__name {
+    font-size: 24px;
+  }
+  .tile__blurb {
+    font-size: 15px;
+    line-height: 1.3;
+  }
+  .tile__copy .link-arrow {
+    margin-top: 6px;
+    font-size: 15px;
   }
   .tile__art {
-    width: 78%;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+  }
+  .tile__art .visual-art {
+    position: absolute;
+    inset: 10px 6px 10px 0;
+    width: auto;
+    height: calc(100% - 20px);
+  }
+  .tile__art .visual-photo {
+    border-radius: 0;
   }
   .cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1859,8 +1983,8 @@ s {
   html {
     scroll-behavior: auto;
   }
-  .site[data-modo="oscuro"] .star,
-  .site[data-modo="oscuro"] .shooting {
+  .site[data-tono="oscuro"] .star,
+  .site[data-tono="oscuro"] .shooting {
     animation: none !important;
   }
   *,
@@ -2147,16 +2271,35 @@ html.bag-open .music {
   transition: opacity 1200ms ease;
 }
 .daysky__wash,
-.daysky__dusk {
+.daysky__dusk,
+.daysky__sunset,
+.daysky__night,
+.daysky__clouds,
+.daysky__motes {
   position: absolute;
   inset: 0;
 }
 .daysky__wash {
   background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 34%, var(--bg) 72%);
 }
+/* Las capas del atardecer aparecen según cuánto se ha bajado (DayCycle). */
 .daysky__dusk {
-  background: linear-gradient(180deg, var(--dusk-top) 0%, var(--dusk-mid) 46%, var(--bg) 92%);
+  background: linear-gradient(180deg, var(--dusk-top) 0%, var(--dusk-mid) 55%, var(--sky-mid) 100%);
   opacity: 0;
+}
+.daysky__sunset {
+  background: linear-gradient(180deg, #2e1660 0%, #6a2675 45%, #a8396f 80%, #c9566a 100%);
+  opacity: 0;
+}
+.daysky__night {
+  background: linear-gradient(180deg, #05051a 0%, #0b0a2a 55%, #1a1040 100%);
+  opacity: 0;
+}
+.daysky__sunset,
+.daysky__night,
+.daysky__clouds,
+.daysky__motes {
+  will-change: opacity;
 }
 
 /* El sol: un disco cálido con un halo que respira. */
@@ -2164,6 +2307,16 @@ html.bag-open .music {
   position: absolute;
   top: 9%;
   right: 11%;
+  will-change: transform, opacity;
+}
+/* A medida que baja, el sol se vuelve naranja de atardecer. */
+.daysky__sun-warm {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 38%, #ffd9a0 0%, #ff8a4c 50%, #e9415a 100%);
+  opacity: 0;
 }
 .daysky__sun {
   position: relative;
@@ -2252,32 +2405,6 @@ html.bag-open .music {
   100% {
     opacity: 0;
     transform: translate(18px, -90px);
-  }
-}
-
-/* Al bajar por la página el sol se pone y el cielo se vuelve atardecer. */
-@supports (animation-timeline: scroll()) {
-  .daysky__sunpath {
-    animation: sun-set linear both;
-    animation-timeline: scroll(root);
-  }
-  .daysky__dusk {
-    animation: dusk-in linear both;
-    animation-timeline: scroll(root);
-  }
-}
-@keyframes sun-set {
-  to {
-    transform: translate(-6vw, 62vh) scale(1.25);
-    filter: saturate(1.3) hue-rotate(-12deg);
-  }
-}
-@keyframes dusk-in {
-  30% {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 

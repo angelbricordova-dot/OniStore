@@ -18,7 +18,7 @@ function bootScript(defaultMode: string, allowToggle: boolean) {
 var p=q.get('tema');if(p&&/^(luna|lavanda|durazno)$/.test(p))el.setAttribute('data-paleta',p);
 var m=q.get('modo');var saved=null;${allowToggle ? "try{saved=localStorage.getItem('onistore-modo')}catch(e){}" : ""}
 var d=${JSON.stringify(defaultMode)};var mode=(m==='claro'||m==='oscuro')?m:(saved==='claro'||saved==='oscuro')?saved:d==='auto'?(matchMedia('(prefers-color-scheme: dark)').matches?'oscuro':'claro'):d;
-el.setAttribute('data-modo',mode);}catch(e){}})();`;
+el.setAttribute('data-modo',mode);el.setAttribute('data-tono',mode);}catch(e){}})();`;
 }
 
 export function SiteShell({ settings, children }: { settings: Settings; solidNav?: boolean; children: React.ReactNode }) {
@@ -28,6 +28,7 @@ export function SiteShell({ settings, children }: { settings: Settings; solidNav
       className="site"
       data-paleta={a.palette}
       data-modo={a.mode === "oscuro" ? "oscuro" : "claro"}
+      data-tono={a.mode === "oscuro" ? "oscuro" : "claro"}
       data-estrellas={a.stars}
       suppressHydrationWarning
     >
