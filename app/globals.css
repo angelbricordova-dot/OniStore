@@ -1936,15 +1936,34 @@ html.bag-open .music {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
   transition:
     background-color 300ms ease,
     color 300ms ease;
 }
-.music[data-playing="true"] .music__icon {
-  background: var(--accent);
-  color: var(--accent-ink);
+/* Mientras no suena, un pulso suave invita a tocarla (tres veces y se calma). */
+.music__icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+.music[data-playing="false"] .music__icon::after {
+  animation: music-pulse 2.2s var(--ease-out) 1.6s 3;
+}
+@keyframes music-pulse {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
 }
 .music__note,
 .music__bars {
@@ -2013,7 +2032,7 @@ html.bag-open .music {
   .music__label {
     margin-left: 10px;
     margin-right: 12px;
-    animation: music-label-out 600ms var(--ease-out) 6s both;
+    animation: music-label-out 600ms var(--ease-out) 9s both;
   }
   .music__icon {
     width: 38px;
@@ -2068,8 +2087,9 @@ html.bag-open .music {
 }
 @media (prefers-reduced-motion: reduce) {
   .music,
-  .music__next {
-    animation: none;
+  .music__next,
+  .music__icon::after {
+    animation: none !important;
   }
   .music[data-playing="true"] .music__bars i {
     animation: none;
