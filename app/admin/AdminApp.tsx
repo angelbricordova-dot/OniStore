@@ -3,11 +3,26 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Mark, ProductArt, plateFor } from "@/components/Art";
 import { money, statusLabel } from "@/lib/format";
-import { THEMES, type ArtKind, type Catalog, type Category, type Faq, type Product, type ProductStatus, type Settings } from "@/lib/types";
+import {
+  LOGOS,
+  PALETTES,
+  SECTIONS,
+  type Appearance,
+  type ArtKind,
+  type Catalog,
+  type Category,
+  type Faq,
+  type HomeContent,
+  type Mode,
+  type Product,
+  type ProductStatus,
+  type SectionId,
+  type Settings,
+} from "@/lib/types";
 import { fetchVersions, logout, publishCatalog, restoreVersion } from "./actions";
 
 type Storage = "blob" | "file" | "readonly";
-type Tab = "productos" | "categorias" | "tienda" | "historial";
+type Tab = "productos" | "categorias" | "apariencia" | "inicio" | "tienda" | "historial";
 
 const BRAND_COLORS = [
   { name: "Medianoche", hex: "#0A0A33" },
@@ -167,7 +182,9 @@ export function AdminApp({ initial, storage }: { initial: Catalog; storage: Stor
           [
             ["productos", `Productos (${catalog.products.length})`],
             ["categorias", "Categorías"],
-            ["tienda", "Tienda y textos"],
+            ["apariencia", "Apariencia"],
+            ["inicio", "Inicio"],
+            ["tienda", "Contacto y datos"],
             ["historial", "Historial"],
           ] as [Tab, string][]
         ).map(([id, label]) => (
@@ -182,13 +199,11 @@ export function AdminApp({ initial, storage }: { initial: Catalog; storage: Stor
           <ProductsTab catalog={catalog} setProducts={setProducts} onError={(t) => setToast({ kind: "error", text: t })} />
         ) : null}
         {tab === "categorias" ? <CategoriesTab catalog={catalog} setCategories={setCategories} /> : null}
-        {tab === "tienda" ? (
-          <SettingsTab
-            settings={catalog.settings}
-            setSettings={setSettings}
-            onError={(t) => setToast({ kind: "error", text: t })}
-          />
+        {tab === "apariencia" ? <AppearanceTab settings={catalog.settings} setSettings={setSettings} /> : null}
+        {tab === "inicio" ? (
+          <HomeTab settings={catalog.settings} setSettings={setSettings} products={catalog.products} />
         ) : null}
+        {tab === "tienda" ? <SettingsTab settings={catalog.settings} setSettings={setSettings} /> : null}
         {tab === "historial" ? (
           <HistoryTab
             dirty={dirty}
@@ -752,49 +767,250 @@ function CategoriesTab({
   );
 }
 
-/* ===================== Tienda y textos ===================== */
+/* ===================== Apariencia ===================== */
 
-function SettingsTab({
-  settings,
-  setSettings,
-  onError,
-}: {
-  settings: Settings;
-  setSettings: (patch: Partial<Settings>) => void;
-  onError: (text: string) => void;
-}) {
-  const [uploading, setUploading] = useState(false);
-  const setFaq = (faq: Faq[]) => setSettings({ faq });
-
+function AppearanceTab({ settings, setSettings }: { settings: Settings; setSettings: (patch: Partial<Settings>) => void }) {
+  const a = settings.appearance;
+  const set = (patch: Partial<Appearance>) => setSettings({ appearance: { ...a, ...patch } });
+  const modes: { id: Mode; name: string; hint: string }[] = [
+    { id: "claro", name: "Día", hint: "Fondo claro." },
+    { id: "oscuro", name: "Noche", hint: "Fondo oscuro con estrellas." },
+    { id: "auto", name: "Automático", hint: "Igual que el teléfono de cada persona." },
+  ];
   return (
     <div className="a-panel">
       <h2>Paleta de colores</h2>
-      <p className="a-muted">Cambia los colores de toda la tienda. Puedes verla antes de publicar con “Ver tienda”.</p>
+      <p className="a-muted">Cambia los colores de toda la tienda. Cada paleta tiene su versión de día y de noche.</p>
       <div className="a-themes" role="radiogroup" aria-label="Paleta de colores">
-        {THEMES.map((t) => (
-          <div key={t.id} className="a-theme" data-on={settings.theme === t.id}>
-            <button
-              type="button"
-              role="radio"
-              aria-checked={settings.theme === t.id}
-              className="a-theme__pick"
-              onClick={() => setSettings({ theme: t.id })}
-            >
+        {PALETTES.map((p) => (
+          <div key={p.id} className="a-theme" data-on={a.palette === p.id}>
+            <button type="button" role="radio" aria-checked={a.palette === p.id} className="a-theme__pick" onClick={() => set({ palette: p.id })}>
               <span className="a-theme__chips" aria-hidden="true">
-                {t.swatches.map((c) => (
+                {p.light.map((c) => (
                   <span key={c} style={{ background: c }} />
                 ))}
               </span>
-              <strong>{t.name}</strong>
-              <span className="a-muted">{t.hint}</span>
+              <span className="a-theme__chips" aria-hidden="true">
+                {p.dark.map((c) => (
+                  <span key={c} style={{ background: c }} />
+                ))}
+              </span>
+              <strong>{p.name}</strong>
+              <span className="a-muted">{p.hint}</span>
             </button>
-            <a className="a-link" href={`/?tema=${t.id}`} target="_blank" rel="noopener">
-              Vista previa
-            </a>
+            <span className="a-theme__links">
+              <a className="a-link" href={`/?tema=${p.id}&modo=claro`} target="_blank" rel="noopener">
+                Ver de día
+              </a>
+              <a className="a-link" href={`/?tema=${p.id}&modo=oscuro`} target="_blank" rel="noopener">
+                Ver de noche
+              </a>
+            </span>
           </div>
         ))}
       </div>
 
+      <h2>Día y noche</h2>
+      <p className="a-muted">Con qué modo abre la tienda la primera vez. Cada visitante puede cambiarlo con el botón de la barra.</p>
+      <div className="a-seg" role="radiogroup" aria-label="Modo inicial">
+        {modes.map((m) => (
+          <button key={m.id} type="button" role="radio" aria-checked={a.mode === m.id} onClick={() => set({ mode: m.id })}>
+            <strong>{m.name}</strong>
+            <span>{m.hint}</span>
+          </button>
+        ))}
+      </div>
+      <div className="a-checks">
+        <label className="a-check">
+          <input type="checkbox" checked={a.modeToggle} onChange={(e) => set({ modeToggle: e.target.checked })} />
+          <span>Mostrar el botón de día/noche en la barra</span>
+        </label>
+        <label className="a-check">
+          <input type="checkbox" checked={a.stars} onChange={(e) => set({ stars: e.target.checked })} />
+          <span>Estrellas animadas de fondo en el modo noche</span>
+        </label>
+      </div>
+
+      <h2>Logo</h2>
+      <p className="a-muted">Mientras llega el logo definitivo, escoge una de estas propuestas.</p>
+      <div className="a-logos" role="radiogroup" aria-label="Logo">
+        {LOGOS.map((l) => (
+          <button key={l.id} type="button" role="radio" aria-checked={a.logo === l.id} className="a-logo" onClick={() => set({ logo: l.id })}>
+            <span className="a-logo__preview">
+              <Mark size={64} variant={l.id} />
+            </span>
+            <strong>{l.name}</strong>
+            <span className="a-muted">{l.hint}</span>
+          </button>
+        ))}
+      </div>
+
+      <h2>Nombre de la tienda</h2>
+      <Field label="Nombre">
+        <input value={settings.storeName} onChange={(e) => setSettings({ storeName: e.target.value })} />
+      </Field>
+    </div>
+  );
+}
+
+/* ===================== Inicio ===================== */
+
+function HomeTab({
+  settings,
+  setSettings,
+  products,
+}: {
+  settings: Settings;
+  setSettings: (patch: Partial<Settings>) => void;
+  products: Product[];
+}) {
+  const h = settings.home;
+  const set = (patch: Partial<HomeContent>) => setSettings({ home: { ...h, ...patch } });
+  const featured = products.find((p) => p.featured) ?? products[0];
+  const sectionName = (id: SectionId) => SECTIONS.find((x) => x.id === id)?.name ?? id;
+
+  return (
+    <div className="a-panel">
+      <h2>Portada</h2>
+      <Field label="Título grande">
+        <input value={h.heroTitle} onChange={(e) => set({ heroTitle: e.target.value })} />
+      </Field>
+      <Field label="Frase debajo del título">
+        <textarea rows={2} value={h.heroSubtitle} onChange={(e) => set({ heroSubtitle: e.target.value })} />
+      </Field>
+      <div className="a-grid">
+        <Field label="Botón principal">
+          <input value={h.heroPrimary} onChange={(e) => set({ heroPrimary: e.target.value })} />
+        </Field>
+        <Field label="Enlace de WhatsApp">
+          <input value={h.heroSecondary} onChange={(e) => set({ heroSecondary: e.target.value })} />
+        </Field>
+      </div>
+      <label className="a-check">
+        <input type="checkbox" checked={h.showFeatured} onChange={(e) => set({ showFeatured: e.target.checked })} />
+        <span>
+          Mostrar la pieza favorita debajo del título{featured ? ` (ahora: ${featured.name})` : ""}. Se cambia en Productos.
+        </span>
+      </label>
+
+      <h2>Secciones del inicio</h2>
+      <p className="a-muted">Muestra, oculta y ordena las secciones. El orden de aquí es el orden de la página.</p>
+      <ul className="a-sections">
+        {h.sections.map((sec, i) => (
+          <li key={sec.id} data-off={!sec.visible}>
+            <label className="a-check">
+              <input
+                type="checkbox"
+                checked={sec.visible}
+                onChange={(e) =>
+                  set({ sections: h.sections.map((x) => (x.id === sec.id ? { ...x, visible: e.target.checked } : x)) })
+                }
+              />
+              <span>{sectionName(sec.id)}</span>
+            </label>
+            <span className="a-sections__order">
+              <button className="a-icon" aria-label="Subir" disabled={i === 0} onClick={() => set({ sections: move(h.sections, i, -1) })}>
+                ↑
+              </button>
+              <button
+                className="a-icon"
+                aria-label="Bajar"
+                disabled={i === h.sections.length - 1}
+                onClick={() => set({ sections: move(h.sections, i, 1) })}
+              >
+                ↓
+              </button>
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <h2>La colección</h2>
+      <div className="a-grid">
+        <Field label="Título">
+          <input value={h.collectionTitle} onChange={(e) => set({ collectionTitle: e.target.value })} />
+        </Field>
+        <Field label="Frase">
+          <input value={h.collectionLede} onChange={(e) => set({ collectionLede: e.target.value })} />
+        </Field>
+      </div>
+
+      <h2>Tu noche, en ciclos</h2>
+      <Field label="Título">
+        <input value={h.plannerTitle} onChange={(e) => set({ plannerTitle: e.target.value })} />
+      </Field>
+      <Field label="Explicación">
+        <textarea rows={3} value={h.plannerLede} onChange={(e) => set({ plannerLede: e.target.value })} />
+      </Field>
+
+      <h2>Cómo pedir</h2>
+      <Field label="Título">
+        <input value={h.stepsTitle} onChange={(e) => set({ stepsTitle: e.target.value })} />
+      </Field>
+      <ul className="a-faq">
+        {h.steps.map((st, i) => (
+          <li key={i}>
+            <Field label={`Paso ${i + 1}`}>
+              <input
+                value={st.title}
+                onChange={(e) => set({ steps: h.steps.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)) })}
+              />
+            </Field>
+            <Field label="Texto">
+              <textarea
+                rows={2}
+                value={st.text}
+                onChange={(e) => set({ steps: h.steps.map((x, j) => (j === i ? { ...x, text: e.target.value } : x)) })}
+              />
+            </Field>
+            {h.steps.length > 1 ? (
+              <div className="a-cats__bar">
+                <button className="a-btn a-btn--ghost a-btn--small" onClick={() => set({ steps: h.steps.filter((_, j) => j !== i) })}>
+                  Quitar paso
+                </button>
+              </div>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+      {h.steps.length < 4 ? (
+        <button className="a-btn a-btn--ghost" onClick={() => set({ steps: [...h.steps, { title: "Nuevo paso.", text: "" }] })}>
+          + Añadir paso
+        </button>
+      ) : null}
+
+      <h2>Preguntas frecuentes</h2>
+      <Field label="Título de la sección" hint="Las preguntas se editan en la pestaña Contacto y datos.">
+        <input value={h.faqTitle} onChange={(e) => set({ faqTitle: e.target.value })} />
+      </Field>
+
+      <h2>Cierre</h2>
+      <Field label="Título">
+        <input value={h.ctaTitle} onChange={(e) => set({ ctaTitle: e.target.value })} />
+      </Field>
+      <Field label="Texto">
+        <textarea rows={2} value={h.ctaText} onChange={(e) => set({ ctaText: e.target.value })} />
+      </Field>
+      <Field label="Botón">
+        <input value={h.ctaButton} onChange={(e) => set({ ctaButton: e.target.value })} />
+      </Field>
+    </div>
+  );
+}
+
+/* ===================== Contacto y datos ===================== */
+
+function SettingsTab({
+  settings,
+  setSettings,
+}: {
+  settings: Settings;
+  setSettings: (patch: Partial<Settings>) => void;
+}) {
+  const setFaq = (faq: Faq[]) => setSettings({ faq });
+
+  return (
+    <div className="a-panel">
       <h2>Contacto y redes</h2>
       <div className="a-grid">
         <Field label="Número de WhatsApp" hint="Con código de país, sin + ni espacios. Ej: 584121234567">
@@ -818,52 +1034,13 @@ function SettingsTab({
         <p className="a-banner a-banner--warn">Sin número de WhatsApp, los pedidos abren WhatsApp sin destinatario.</p>
       ) : null}
 
-      <h2>Textos de la tienda</h2>
+      <h2>Avisos y entregas</h2>
       <Field label="Aviso arriba de la página" hint="Opcional. Ej: Envíos gratis este fin de semana. Déjalo vacío para ocultarlo.">
         <input value={settings.announcement} onChange={(e) => setSettings({ announcement: e.target.value })} />
       </Field>
-      <Field label="Cómo entregan los pedidos">
+      <Field label="Cómo entregan los pedidos" hint="Aparece en las fichas de producto y en el pie de la página.">
         <textarea rows={2} value={settings.delivery} onChange={(e) => setSettings({ delivery: e.target.value })} />
       </Field>
-
-      <h2>Foto de Oniris</h2>
-      <p className="a-muted">Aparece en un círculo, en la sección “Hecho por Oniris”. Si no hay, se muestra un dibujo.</p>
-      <div className="a-about">
-        <div className="a-about__preview">
-          {settings.aboutImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={settings.aboutImage} alt="Foto actual" />
-          ) : (
-            <Mark size={80} />
-          )}
-        </div>
-        <label className="a-btn a-btn--ghost">
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (!file) return;
-              setUploading(true);
-              try {
-                setSettings({ aboutImage: await uploadImage(file, "site") });
-              } catch (error) {
-                onError(error instanceof Error ? error.message : "No se pudo subir la foto.");
-              } finally {
-                setUploading(false);
-              }
-            }}
-          />
-          {uploading ? "Subiendo…" : settings.aboutImage ? "Cambiar foto" : "Subir foto"}
-        </label>
-        {settings.aboutImage ? (
-          <button className="a-btn a-btn--ghost" onClick={() => setSettings({ aboutImage: "" })}>
-            Quitar
-          </button>
-        ) : null}
-      </div>
 
       <h2>Preguntas frecuentes</h2>
       <ul className="a-faq">
@@ -901,11 +1078,6 @@ function SettingsTab({
       <button className="a-btn a-btn--ghost" onClick={() => setFaq([...settings.faq, { q: "", a: "" }])}>
         + Añadir pregunta
       </button>
-
-      <h2>Nombre de la tienda</h2>
-      <Field label="Nombre">
-        <input value={settings.storeName} onChange={(e) => setSettings({ storeName: e.target.value })} />
-      </Field>
     </div>
   );
 }

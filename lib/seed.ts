@@ -1,3 +1,4 @@
+import { DEFAULT_APPEARANCE, DEFAULT_HOME } from "./defaults";
 import type { Catalog } from "./types";
 
 /**
@@ -9,7 +10,8 @@ export const seedCatalog: Catalog = {
   updatedAt: "2026-10-13T00:00:00.000Z",
   settings: {
     storeName: "OniStore",
-    theme: "luna",
+    appearance: DEFAULT_APPEARANCE,
+    home: DEFAULT_HOME,
     whatsapp: "",
     instagram: "https://instagram.com/onistore",
     tiktok: "https://tiktok.com/@onistore",
@@ -17,7 +19,6 @@ export const seedCatalog: Catalog = {
     announcement: "",
     delivery:
       "Coordinamos la entrega o el envío contigo por WhatsApp, según tu zona.",
-    aboutImage: "",
     faq: [
       {
         q: "¿Cómo sé cuál es mi talla?",

@@ -19,7 +19,10 @@ colors:
   noche-bg-alt: "#111130"
   noche-surface: "#17173D"
   noche-ink: "#F5F5F7"
-  noche-accent: "#FFBF42"
+  noche-ink-2: "#A3A3BC"
+  noche-accent-luna: "#F06AB8"
+  noche-accent-lavanda: "#C7A4F2"
+  noche-accent-durazno: "#FF9A7A"
 typography:
   hero:
     fontFamily: "-apple-system, SF Pro Display, Inter, system-ui, sans-serif"
@@ -90,30 +93,47 @@ components:
 
 OniStore se presenta como una página de producto de Apple: mucho aire, una sola idea por pantalla, tipografía protagonista y el producto grande sobre un fondo de estudio del mismo tono de la prenda. Nada compite con la pijama. El movimiento es sutil y siempre responde a algo: entradas suaves al hacer scroll, un fundido cuando cambia el color, una leve presión en los botones.
 
-La marca vive en el acento y en los tintes de cada producto, no en adornos. Hay cuatro paletas salidas de los colores de la marca; la dueña elige una en /admin.
+La marca vive en el acento y en los tintes de cada producto, no en adornos. Hay tres paletas salidas de los colores de la marca, cada una con versión de día y de noche. En /admin se escoge la paleta, el modo con que abre la tienda, si hay botón de día/noche, si hay estrellas, el logo, los textos del inicio y qué secciones se ven y en qué orden.
+
+La primera pantalla es solo texto: título, frase y dos acciones sobre un brillo suave. La pieza favorita debajo es opcional.
 
 **Key Characteristics:**
 - Fondos lisos, mucho espacio y una sola acción principal por sección.
 - Letra del sistema (SF Pro en Apple, Inter en el resto), con interletrado negativo en tamaños grandes.
 - Cada producto sobre un fondo de estudio teñido con su propio color.
 - Un solo color de acento por paleta, para botones y enlaces.
-- Movimiento sutil, sin bucles ni efectos de fondo.
+- Movimiento sutil. La única excepción es el cielo del modo noche: estrellas pequeñas que titilan despacio y, de vez en cuando, una estrella fugaz.
 
 ## Colors
 
-Cuatro paletas, cada una con fondo, fondo alterno, tinta, tinta secundaria y un acento.
+Tres paletas (Luna, Lavanda, Durazno), cada una con fondo, fondo alterno, tinta, tinta secundaria y un acento, en versión de día y de noche.
 
 ### Primary
-- **Acento de la paleta**: magenta #A11370 (Luna), ciruela #38125C (Lavanda), coral profundo #C93A26 (Durazno), dorado #FFBF42 (Noche). Solo para botones, enlaces y el estado elegido.
+- **Acento de día**: magenta #A11370 (Luna), ciruela #38125C (Lavanda), coral profundo #C93A26 (Durazno).
+- **Acento de noche**: rosa #F06AB8 (Luna), lila #C7A4F2 (Lavanda), durazno #FF9A7A (Durazno). Más claros para que se lean sobre el fondo oscuro.
+- Solo para botones, enlaces y el estado elegido.
 
 ### Neutral
-- **Fondo** (#FFFFFF, #FBFAFD, #FFFCFA, #07071C) y **fondo alterno** (#F5F5F7, #F2EEF8, #FFF2EB, #111130): las secciones y las tarjetas se separan por este paso de tono, no por líneas.
+- **Fondo** (día #FFFFFF, #FBFAFD, #FFFCFA; noche #07071C y sus variantes) y **fondo alterno** (día #F5F5F7, #F2EEF8, #FFF2EB; noche #111130 y variantes): las secciones y las tarjetas se separan por este paso de tono, no por líneas.
 - **Tinta** (#1D1D1F y equivalentes) y **tinta secundaria** (#6E6E73 y equivalentes): todo el texto; el gris solo para lo secundario.
 
 ### Named Rules
 **The One Accent Rule.** Cada paleta tiene un solo acento y se usa solo para lo que se toca. Nunca como fondo de sección.
 
-**The Product Tint Rule.** El color de un fondo de producto sale de la prenda: un tinte muy claro de su color en las paletas claras, una versión profunda en Noche.
+**The Product Tint Rule.** El color de un fondo de producto sale de la prenda: un tinte muy claro de su color en las paletas claras, una versión profunda en el modo noche (los colores claros se oscurecen hacia la ciruela, nunca hacia el gris).
+
+## Día y noche
+
+- El botón de la barra (sol/luna) cambia el modo con un círculo que se expande desde el botón (View Transitions) y recuerda la elección de cada visitante.
+- En el modo noche aparece un cielo fijo detrás de todo: unas 110 estrellas que entran escalonadas y titilan despacio, algunas doradas, y dos estrellas fugaces muy espaciadas. Con "reducir movimiento" quedan quietas.
+- La dueña puede apagar las estrellas o el botón desde /admin.
+
+## Logo
+
+El logo no es definitivo. Tres propuestas, sin estrellas ni pestañas, todas con el degradado dorado → coral → magenta:
+- **Luna creciente**: una media luna limpia.
+- **Fase lunar**: la luna completa con su parte iluminada.
+- **Luna y nube**: una media luna que descansa sobre una nube durazno.
 
 ## Typography
 
@@ -165,10 +185,11 @@ Esquinas redondeadas y generosas: 28px en mosaicos y fondos de producto grandes,
 - **Do** mostrar cada producto grande, sobre el tinte de su propio color.
 - **Do** usar el acento solo en lo que se toca.
 - **Do** mantener el movimiento sutil, y siempre como respuesta a algo.
-- **Do** cambiar de paleta solo desde /admin, sin tocar el código.
+- **Do** cambiar paleta, modo, logo y secciones solo desde /admin, sin tocar el código.
 
 ### Don't:
-- **Don't** volver a efectos de fondo animados, rayas o texturas: el estilo cinético se probó y se descartó.
+- **Don't** volver a efectos de fondo animados, rayas o texturas: el estilo cinético se probó y se descartó. Las estrellas del modo noche son la única capa de fondo.
+- **Don't** poner un producto gigante al abrir la página, ni nombrar a la persona detrás de la tienda.
 - **Don't** usar más de un color de acento a la vez.
 - **Don't** poner etiquetas pequeñas encima de los títulos.
 - **Don't** inventar testimonios, cifras ni procesos que la tienda no haya confirmado.

@@ -5,11 +5,11 @@ import { cookies } from "next/headers";
 const COOKIE = "oni_admin";
 const SESSION_DAYS = 30;
 
-/** En desarrollo, si no hay contraseña configurada, se usa "oniris". */
+/** En desarrollo, si no hay contraseña configurada, se usa "luna". */
 export function adminPassword(): string | null {
   const pwd = process.env.ADMIN_PASSWORD?.trim();
   if (pwd) return pwd;
-  return process.env.NODE_ENV === "production" ? null : "oniris";
+  return process.env.NODE_ENV === "production" ? null : "luna";
 }
 
 function secret() {

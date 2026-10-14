@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { sectionLinks } from "@/lib/defaults";
 import type { Settings } from "@/lib/types";
-import { Mark } from "./Art";
+import { Logo } from "./Art";
 
 export function Footer({ settings }: { settings: Settings }) {
   const year = new Date().getFullYear();
@@ -10,14 +11,14 @@ export function Footer({ settings }: { settings: Settings }) {
         <p className="footer__note">{settings.delivery} Precios en dólares. Pedidos y pagos por WhatsApp.</p>
         <div className="footer__row">
           <Link href="/" className="footer__brand" aria-label={`${settings.storeName}, inicio`}>
-            <Mark size={20} />
-            <span>{settings.storeName}</span>
+            <Logo name={settings.storeName} variant={settings.appearance.logo} size={20} />
           </Link>
           <nav className="footer__links" aria-label="Pie de página">
-            <Link href="/#coleccion">Colección</Link>
-            <Link href="/#tu-noche">Tu noche</Link>
-            <Link href="/#como-pedir">Cómo pedir</Link>
-            <Link href="/#preguntas">Preguntas</Link>
+            {sectionLinks(settings.home).map((l) => (
+              <Link key={l.id} href={l.href}>
+                {l.label}
+              </Link>
+            ))}
             {settings.instagram ? (
               <a href={settings.instagram} target="_blank" rel="noopener">
                 Instagram

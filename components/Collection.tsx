@@ -8,10 +8,14 @@ export function Collection({
   products,
   categories,
   settings,
+  title = "La colección.",
+  lede = "",
 }: {
   products: Product[];
   categories: Category[];
   settings: Settings;
+  title?: string;
+  lede?: string;
 }) {
   const tabs = useMemo(
     () => [
@@ -44,11 +48,13 @@ export function Collection({
     <section className="collection" id="coleccion" aria-labelledby="collection-title">
       <div className="section-head">
         <h2 id="collection-title" className="title" data-reveal>
-          La colección.
+          {title}
         </h2>
-        <p className="lede" data-reveal>
-          Toca cualquier pieza para ver sus colores y tallas.
-        </p>
+        {lede ? (
+          <p className="lede" data-reveal>
+            {lede}
+          </p>
+        ) : null}
       </div>
       <div className="segmented" role="tablist" aria-label="Categorías" data-reveal>
         {tabs.map((t) => (

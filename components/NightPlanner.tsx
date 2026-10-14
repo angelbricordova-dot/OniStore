@@ -33,7 +33,7 @@ const duration = (cycles: number) => {
   return m ? `${h} h ${m} min` : `${h} h`;
 };
 
-export function NightPlanner() {
+export function NightPlanner({ title = "Tu noche, en ciclos.", lede = "" }: { title?: string; lede?: string }) {
   const [mode, setMode] = useState<"alarma" | "ahora">("alarma");
   const [wake, setWake] = useState("06:30");
   const [now, setNow] = useState(22 * 60 + 30);
@@ -75,12 +75,9 @@ export function NightPlanner() {
     <section className="planner" id="tu-noche" aria-labelledby="planner-title">
       <div className="planner__intro">
         <h2 id="planner-title" className="title" data-reveal>
-          Tu noche, en ciclos.
+          {title}
         </h2>
-        <p data-reveal>
-          Dormimos en ciclos de unos 90 minutos. Despertar cuando uno termina, y no a la mitad, es la diferencia entre
-          levantarte liviano o arrastrando la mañana.
-        </p>
+        {lede ? <p data-reveal>{lede}</p> : null}
         <div className="seg" role="radiogroup" aria-label="Qué quieres calcular" data-reveal>
           <button type="button" role="radio" aria-checked={mode === "alarma"} onClick={() => setMode("alarma")}>
             Sé a qué hora me levanto

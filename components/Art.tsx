@@ -1,5 +1,5 @@
 import { useId } from "react";
-import type { ArtKind } from "@/lib/types";
+import type { ArtKind, LogoVariant } from "@/lib/types";
 
 /* Colores de la marca */
 export const palette = {
@@ -39,7 +39,8 @@ export function plateFor(hex?: string) {
 export function plateTints(hex?: string) {
   const c = hex ?? palette.plum;
   const light = isLight(c) ? mix(c, palette.plum, 0.16) : mix(c, "#ffffff", 0.86);
-  const dark = isLight(c) ? mix(c, palette.night, 0.72) : mix(c, palette.night, 0.55);
+  // Un color claro se oscurece hacia la ciruela para que no quede gris de noche.
+  const dark = isLight(c) ? mix(mix(c, palette.plum, 0.55), palette.night, 0.6) : mix(c, palette.night, 0.55);
   return { "--plate-l": light, "--plate-d": dark } as React.CSSProperties;
 }
 
@@ -82,11 +83,13 @@ function sparkle(cx: number, cy: number, r: number) {
 
 export function Mark({
   size = 40,
+  variant = "creciente",
   mono,
   className,
   title,
 }: {
   size?: number | string;
+  variant?: LogoVariant;
   /** Pinta la marca en un solo color (currentColor). */
   mono?: boolean;
   className?: string;
@@ -94,7 +97,6 @@ export function Mark({
 }) {
   const id = useId().replace(/:/g, "");
   const fill = mono ? "currentColor" : `url(#g${id})`;
-  const line = mono ? "var(--mark-cut, #0A0A33)" : palette.night;
   return (
     <svg
       viewBox="0 0 120 120"
@@ -106,33 +108,52 @@ export function Mark({
     >
       {title ? <title>{title}</title> : null}
       <defs>
-        <linearGradient id={`g${id}`} x1="0.15" y1="0.1" x2="0.85" y2="0.95">
+        <linearGradient id={`g${id}`} x1="0.1" y1="0.05" x2="0.85" y2="0.95">
           <stop offset="0" stopColor={palette.gold} />
-          <stop offset="0.5" stopColor={palette.coral} />
+          <stop offset="0.45" stopColor={palette.coral} />
           <stop offset="1" stopColor={palette.magenta} />
+        </linearGradient>
+        <linearGradient id={`c${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#FFE4D6" />
+          <stop offset="1" stopColor={palette.peach} />
         </linearGradient>
         <mask id={`m${id}`}>
           <rect width="120" height="120" fill="#fff" />
-          <circle cx="80" cy="46" r="40" fill="#000" />
+          {variant === "nube" ? (
+            <circle cx="82" cy="42" r="32" fill="#000" />
+          ) : (
+            <circle cx="80" cy="44" r="40" fill="#000" />
+          )}
         </mask>
       </defs>
-      <circle cx="58" cy="62" r="50" fill={fill} mask={`url(#m${id})`} />
-      {/* ojo dormido */}
-      <g
-        fill="none"
-        stroke={mono ? "currentColor" : line}
-        strokeWidth="4.2"
-        strokeLinecap="round"
-        style={mono ? { stroke: "var(--mark-cut, #0A0A33)" } : undefined}
-      >
-        <path d="M22 78 Q36 92 52 86" />
-        <path d="M26 84 L21 93" />
-        <path d="M34 89 L31 99" />
-        <path d="M44 90 L44 100" />
-      </g>
-      <path d={sparkle(92, 30, 11)} fill={mono ? "currentColor" : palette.gold} />
-      <circle cx="104" cy="56" r="3.2" fill={mono ? "currentColor" : palette.peach} />
+      {variant === "fase" ? (
+        <>
+          <circle cx="60" cy="60" r="48" fill={mono ? "currentColor" : palette.peach} opacity={mono ? 0.22 : 0.28} />
+          <circle cx="60" cy="60" r="48" fill={fill} mask={`url(#m${id})`} />
+        </>
+      ) : variant === "nube" ? (
+        <>
+          <circle cx="58" cy="50" r="38" fill={fill} mask={`url(#m${id})`} />
+          <path
+            d="M24 96c-9 0-15-6-15-14s6-14 15-14c2-10 10-17 21-17 9 0 16 5 19 12 2-1 5-2 8-2 10 0 18 8 18 18h3c8 0 13 5 13 11s-5 6-13 6H24Z"
+            fill={mono ? "currentColor" : `url(#c${id})`}
+            opacity={mono ? 0.55 : 1}
+          />
+        </>
+      ) : (
+        <circle cx="58" cy="62" r="50" fill={fill} mask={`url(#m${id})`} />
+      )}
     </svg>
+  );
+}
+
+/** Logo completo: la marca y el nombre. */
+export function Logo({ name, variant, size = 26 }: { name: string; variant?: LogoVariant; size?: number }) {
+  return (
+    <span className="logo">
+      <Mark size={size} variant={variant} />
+      <span className="logo__name">{name}</span>
+    </span>
   );
 }
 
@@ -375,31 +396,5 @@ export function GiftArt({ className }: { className?: string }) {
       <path d={sparkle(96, 92, 14)} fill={palette.cream} />
       <path d={sparkle(318, 70, 10)} fill={palette.night} />
     </Svg>
-  );
-}
-
-/** Cielo con estrellas, determinista para que no cambie entre servidor y navegador. */
-export function Stars({ count = 70, seed = 7, className }: { count?: number; seed?: number; className?: string }) {
-  let s = seed;
-  const rand = () => {
-    s = (s * 16807) % 2147483647;
-    return (s - 1) / 2147483646;
-  };
-  const stars = Array.from({ length: count }, () => ({
-    x: rand() * 1000,
-    y: rand() * 1000,
-    r: rand() < 0.12 ? 2.6 : rand() * 1.4 + 0.6,
-    d: (rand() * 4).toFixed(2),
-  }));
-  return (
-    <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden="true">
-      {stars.map((st, i) =>
-        st.r > 2.5 ? (
-          <path key={i} d={sparkle(st.x, st.y, 9)} className="twinkle" style={{ animationDelay: `${st.d}s` }} />
-        ) : (
-          <circle key={i} cx={st.x} cy={st.y} r={st.r} className="twinkle" style={{ animationDelay: `${st.d}s` }} />
-        ),
-      )}
-    </svg>
   );
 }

@@ -3,7 +3,18 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { del, get, list, put } from "@vercel/blob";
 import { seedCatalog } from "./seed";
-import { THEMES, type Catalog, type Category, type Product, type Settings } from "./types";
+import { DEFAULT_APPEARANCE, DEFAULT_HOME } from "./defaults";
+import {
+  LOGOS,
+  PALETTES,
+  SECTIONS,
+  type Appearance,
+  type Catalog,
+  type Category,
+  type HomeContent,
+  type Product,
+  type Settings,
+} from "./types";
 
 /**
  * Dónde vive el catálogo:
@@ -190,14 +201,14 @@ export function normalizeCatalog(raw: unknown): Catalog {
 
   const settings: Settings = {
     storeName: str(s.storeName, seed.storeName) || seed.storeName,
-    theme: THEMES.some((t) => t.id === s.theme) ? (s.theme as Settings["theme"]) : "luna",
+    appearance: normalizeAppearance(s.appearance, (s as { theme?: unknown }).theme),
+    home: normalizeHome(s.home),
     whatsapp: str(s.whatsapp).replace(/\D/g, ""),
     instagram: str(s.instagram),
     tiktok: str(s.tiktok),
     currency: str(s.currency, seed.currency) || "$",
     announcement: str(s.announcement),
     delivery: str(s.delivery, seed.delivery),
-    aboutImage: str(s.aboutImage),
     faq: Array.isArray(s.faq)
       ? s.faq
           .map((f) => ({ q: str(f?.q).trim(), a: str(f?.a).trim() }))
@@ -260,5 +271,58 @@ export function normalizeCatalog(raw: unknown): Catalog {
     settings,
     categories,
     products,
+  };
+}
+
+function normalizeAppearance(raw: unknown, legacyTheme?: unknown): Appearance {
+  const a = (raw ?? {}) as Partial<Appearance>;
+  const d = DEFAULT_APPEARANCE;
+  // Versiones anteriores guardaban una sola "theme"; "noche" equivale a Luna en modo oscuro.
+  const legacy = typeof legacyTheme === "string" ? legacyTheme : "";
+  const paletteSource = a.palette ?? (legacy === "noche" ? "luna" : legacy);
+  return {
+    palette: PALETTES.some((p) => p.id === paletteSource) ? (paletteSource as Appearance["palette"]) : d.palette,
+    mode: a.mode === "claro" || a.mode === "oscuro" || a.mode === "auto" ? a.mode : legacy === "noche" ? "oscuro" : d.mode,
+    modeToggle: typeof a.modeToggle === "boolean" ? a.modeToggle : d.modeToggle,
+    stars: typeof a.stars === "boolean" ? a.stars : d.stars,
+    logo: LOGOS.some((l) => l.id === a.logo) ? (a.logo as Appearance["logo"]) : d.logo,
+  };
+}
+
+function normalizeHome(raw: unknown): HomeContent {
+  const h = (raw ?? {}) as Partial<HomeContent>;
+  const d = DEFAULT_HOME;
+  const text = (v: unknown, fallback: string) => (typeof v === "string" && v.trim() ? v : fallback);
+  const known = new Set(SECTIONS.map((x) => x.id));
+  const seen = new Set<string>();
+  const sections = (Array.isArray(h.sections) ? h.sections : [])
+    .filter((x) => x && known.has(x.id) && !seen.has(x.id) && seen.add(x.id))
+    .map((x) => ({ id: x.id, visible: x.visible !== false }));
+  // Secciones nuevas que la tienda todavía no conoce se agregan al final.
+  for (const sec of d.sections) if (!seen.has(sec.id)) sections.push({ ...sec });
+  const steps =
+    Array.isArray(h.steps) && h.steps.length
+      ? h.steps.slice(0, 4).map((st, i) => ({
+          title: text(st?.title, d.steps[i]?.title ?? ""),
+          text: text(st?.text, d.steps[i]?.text ?? ""),
+        }))
+      : d.steps;
+  return {
+    heroTitle: text(h.heroTitle, d.heroTitle),
+    heroSubtitle: text(h.heroSubtitle, d.heroSubtitle),
+    heroPrimary: text(h.heroPrimary, d.heroPrimary),
+    heroSecondary: text(h.heroSecondary, d.heroSecondary),
+    showFeatured: typeof h.showFeatured === "boolean" ? h.showFeatured : d.showFeatured,
+    sections,
+    collectionTitle: text(h.collectionTitle, d.collectionTitle),
+    collectionLede: text(h.collectionLede, d.collectionLede),
+    plannerTitle: text(h.plannerTitle, d.plannerTitle),
+    plannerLede: text(h.plannerLede, d.plannerLede),
+    stepsTitle: text(h.stepsTitle, d.stepsTitle),
+    steps,
+    faqTitle: text(h.faqTitle, d.faqTitle),
+    ctaTitle: text(h.ctaTitle, d.ctaTitle),
+    ctaText: text(h.ctaText, d.ctaText),
+    ctaButton: text(h.ctaButton, d.ctaButton),
   };
 }

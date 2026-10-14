@@ -20,13 +20,13 @@ OniStore is a small family business in Venezuela that sells pajamas and, over ti
 
 ## Positioning
 
-The shop is named after its founder, Oniris, and plays on "onírico" (of dreams). It does not sell clothing in general: every product is chosen for the night and for sleep quality, and the owner herself answers on WhatsApp.
+The name plays on "onírico" (of dreams). It does not sell clothing in general: every product is chosen for the night and for sleep quality, and orders are answered personally on WhatsApp. The owner stays anonymous: the site never names or shows the person behind the shop.
 
 ## Operating Context
 
 - Orders and payment happen on WhatsApp; the site builds the order message. There is no online checkout.
 - Prices are in US dollars. Delivery or shipping is arranged on WhatsApp, inside Venezuela.
-- Oniris manages the catalogue herself from `/admin`, usually on her phone: products, photos, prices, stock status, categories, FAQ, WhatsApp number.
+- The owner manages everything from `/admin`, usually on a phone: products, photos, prices, stock status, categories, FAQ, WhatsApp number, and the look of the store (palette, day/night mode, stars, logo, home texts, which home sections show and in what order).
 - Hosted on Vercel; catalogue and photos live in Vercel Blob; code versions in GitHub.
 
 ## Capabilities and Constraints
@@ -38,12 +38,13 @@ The shop is named after its founder, Oniris, and plays on "onírico" (of dreams)
 
 ## Brand Commitments
 
-- Name: OniStore, from Oniris + onírico.
+- Name: OniStore, from onírico. Never explain it through a person's name.
 - Palette (binding, from the owner's palette board): #0A0A33, #38125C, #A11370, #F95C42, #FFBF42, #FFA385, #F7ECE1, used with gradients like the reference logo (warm glow fading into violet and night).
-- The logo is not final; the current mark is a sleeping crescent moon.
+- The logo is not final. The owner likes the moon but not stars or eyelashes on it; three proposals live in the admin (Luna creciente, Fase lunar, Luna y nube).
 - Voice: warm, close, Venezuelan Spanish, "tú".
 - The owner wants the site smooth and calm, in the spirit of Apple's product pages: lots of space, clean type, little visual noise. A busy, ornamental style (the kinetic "cromointerferencia" floor) was tried and rejected.
-- The colour palette is switchable from /admin (Luna, Lavanda, Durazno, Noche), all derived from the brand colours.
+- The colour palette is switchable from /admin (Luna, Lavanda, Durazno), each with a day and a night version. Night mode shows a softly twinkling star field; visitors can switch modes from the nav.
+- No giant product at the top of the home page: the hero is text first; a featured product below it is optional.
 
 ## Evidence on Hand
 

@@ -24,7 +24,7 @@ export default async function AdminPage() {
     return (
       <main className="admin-login">
         <Mark size={72} />
-        <h1>Hola, Oniris</h1>
+        <h1>Hola de nuevo</h1>
         <p>Escribe la contraseña para administrar la tienda.</p>
         <LoginForm />
       </main>

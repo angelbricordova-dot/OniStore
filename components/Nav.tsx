@@ -2,11 +2,23 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import type { LogoVariant } from "@/lib/types";
 import { useBag } from "./Bag";
-import { Mark } from "./Art";
+import { Logo } from "./Art";
 import { BagIcon } from "./Icons";
+import { ModeToggle } from "./ModeToggle";
 
-export function Nav({ storeName }: { storeName: string }) {
+export function Nav({
+  storeName,
+  logo,
+  modeToggle,
+  links,
+}: {
+  storeName: string;
+  logo: LogoVariant;
+  modeToggle: boolean;
+  links: { id: string; href: string; label: string }[];
+}) {
   const [scrolled, setScrolled] = useState(false);
   const { count, setOpen } = useBag();
 
@@ -21,19 +33,22 @@ export function Nav({ storeName }: { storeName: string }) {
     <header className="nav" data-scrolled={scrolled}>
       <div className="nav__inner">
         <Link href="/" className="nav__brand" aria-label={`${storeName}, inicio`}>
-          <Mark size={24} />
-          <span>{storeName}</span>
+          <Logo name={storeName} variant={logo} size={24} />
         </Link>
         <nav className="nav__links" aria-label="Principal">
-          <Link href="/#coleccion">Colección</Link>
-          <Link href="/#tu-noche">Tu noche</Link>
-          <Link href="/#como-pedir">Cómo pedir</Link>
-          <Link href="/#preguntas">Preguntas</Link>
+          {links.map((l) => (
+            <Link key={l.id} href={l.href}>
+              {l.label}
+            </Link>
+          ))}
         </nav>
-        <button className="nav__bag" onClick={() => setOpen(true)} aria-label={`Abrir la bolsa, ${count} productos`}>
-          <BagIcon size={20} />
-          {count > 0 ? <span className="nav__count">{count}</span> : null}
-        </button>
+        <div className="nav__end">
+          {modeToggle ? <ModeToggle /> : null}
+          <button className="nav__bag" onClick={() => setOpen(true)} aria-label={`Abrir la bolsa, ${count} productos`}>
+            <BagIcon size={20} />
+            {count > 0 ? <span className="nav__count">{count}</span> : null}
+          </button>
+        </div>
       </div>
     </header>
   );

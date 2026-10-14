@@ -36,19 +36,71 @@ export type Category = {
 
 export type Faq = { q: string; a: string };
 
-export type Theme = "luna" | "lavanda" | "durazno" | "noche";
+export type Palette = "luna" | "lavanda" | "durazno";
+export type Mode = "claro" | "oscuro" | "auto";
+export type LogoVariant = "creciente" | "fase" | "nube";
 
-export const THEMES: { id: Theme; name: string; hint: string; swatches: string[] }[] = [
-  { id: "luna", name: "Luna", hint: "Blanco limpio con magenta.", swatches: ["#FFFFFF", "#F5F4F7", "#A11370"] },
-  { id: "lavanda", name: "Lavanda", hint: "Lila suave con ciruela.", swatches: ["#FBFAFD", "#F1ECF7", "#38125C"] },
-  { id: "durazno", name: "Durazno", hint: "Blanco cálido con coral.", swatches: ["#FFFCFA", "#FFF1EA", "#C93A26"] },
-  { id: "noche", name: "Noche", hint: "Oscura con dorado.", swatches: ["#07071C", "#15153A", "#FFBF42"] },
+export const PALETTES: { id: Palette; name: string; hint: string; light: string[]; dark: string[] }[] = [
+  { id: "luna", name: "Luna", hint: "Limpia, con magenta.", light: ["#FFFFFF", "#F5F5F7", "#A11370"], dark: ["#07071C", "#17173D", "#F06AB8"] },
+  { id: "lavanda", name: "Lavanda", hint: "Lila suave, con ciruela.", light: ["#FBFAFD", "#F2EEF8", "#38125C"], dark: ["#0B0820", "#1E1840", "#C7A4F2"] },
+  { id: "durazno", name: "Durazno", hint: "Cálida, con coral.", light: ["#FFFCFA", "#FFF2EB", "#C93A26"], dark: ["#0F0A1C", "#221934", "#FF9A7A"] },
 ];
+
+export const LOGOS: { id: LogoVariant; name: string; hint: string }[] = [
+  { id: "creciente", name: "Luna creciente", hint: "Una media luna limpia, con el degradado de la marca." },
+  { id: "fase", name: "Fase lunar", hint: "La luna completa con su parte iluminada." },
+  { id: "nube", name: "Luna y nube", hint: "Una media luna que descansa sobre una nube." },
+];
+
+export type SectionId = "categorias" | "coleccion" | "tuNoche" | "comoPedir" | "preguntas" | "cierre";
+
+export const SECTIONS: { id: SectionId; name: string }[] = [
+  { id: "categorias", name: "Categorías (mosaicos)" },
+  { id: "coleccion", name: "La colección" },
+  { id: "tuNoche", name: "Tu noche, en ciclos" },
+  { id: "comoPedir", name: "Cómo pedir" },
+  { id: "preguntas", name: "Preguntas frecuentes" },
+  { id: "cierre", name: "Cierre con WhatsApp" },
+];
+
+export type HomeSection = { id: SectionId; visible: boolean };
+export type Step = { title: string; text: string };
+
+export type Appearance = {
+  palette: Palette;
+  /** Modo con el que abre la página. "auto" sigue al teléfono del visitante. */
+  mode: Mode;
+  /** Muestra el botón de día/noche en la barra. */
+  modeToggle: boolean;
+  /** Estrellas animadas de fondo en el modo noche. */
+  stars: boolean;
+  logo: LogoVariant;
+};
+
+export type HomeContent = {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroPrimary: string;
+  heroSecondary: string;
+  /** Muestra la pieza destacada debajo del título. */
+  showFeatured: boolean;
+  sections: HomeSection[];
+  collectionTitle: string;
+  collectionLede: string;
+  plannerTitle: string;
+  plannerLede: string;
+  stepsTitle: string;
+  steps: Step[];
+  faqTitle: string;
+  ctaTitle: string;
+  ctaText: string;
+  ctaButton: string;
+};
 
 export type Settings = {
   storeName: string;
-  /** Paleta de colores de la tienda. */
-  theme: Theme;
+  appearance: Appearance;
+  home: HomeContent;
   /** Número con código de país, solo dígitos. Ej: 584121234567 */
   whatsapp: string;
   instagram: string;
@@ -58,7 +110,6 @@ export type Settings = {
   announcement: string;
   /** Cómo se entregan los pedidos. */
   delivery: string;
-  aboutImage: string;
   faq: Faq[];
 };
 
