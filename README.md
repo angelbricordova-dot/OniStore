@@ -4,7 +4,7 @@ Tienda de pijamas y de todo lo que ayuda a dormir mejor. El diseño es sereno, a
 
 - **Tienda**: catálogo por categorías, ficha de cada producto, bolsa y pedido por WhatsApp con el mensaje ya escrito.
 - **Tu noche, en ciclos**: dice a qué hora acostarse según la hora de la alarma (ciclos de 90 minutos) y dibuja la noche como una línea de tiempo.
-- **`/admin`**: panel para administrar productos, fotos, precios y categorías, y personalizar la tienda: paleta de colores, modo día/noche, estrellas, logo, textos del inicio, orden y visibilidad de las secciones, preguntas frecuentes, WhatsApp y redes. Cada publicación guarda una copia en el historial (las últimas 30) y se puede volver atrás.
+- **`/admin`**: panel para administrar productos, fotos, precios y categorías, y personalizar la tienda: paleta de colores, modo día/noche, cielo de día y estrellas, música lo-fi, logo, textos del inicio, orden y visibilidad de las secciones, preguntas frecuentes, WhatsApp y redes. Cada publicación guarda una copia en el historial (las últimas 30) y se puede volver atrás.
 - **`/marca`**: kit de marca con las propuestas de logo, la paleta, la foto de perfil y las portadas de historias destacadas para Instagram y TikTok (PNG de 1080 × 1080 en `public/marca/`).
 
 ## Publicar en Vercel (una sola vez)
@@ -22,7 +22,7 @@ Cada `git push` a la rama principal publica una versión nueva de la página. Lo
 ## Primeros pasos en el admin
 
 1. **Contacto y datos** → escribe el número de WhatsApp con código de país (ej. `584121234567`), los enlaces de Instagram y TikTok y la moneda.
-2. **Productos** → cambia los productos de ejemplo por los reales y sube sus fotos. Mientras un producto no tenga fotos se muestra un dibujo.
+2. **Productos** → cambia los productos de ejemplo por los reales y sube sus fotos tal como salen del teléfono. La tienda las endereza, las reduce a 1800 px, les quita los datos ocultos (ubicación, modelo del teléfono) y las guarda en WebP; luego cada teléfono recibe el tamaño que necesita en AVIF o WebP. Mientras un producto no tenga fotos se muestra un dibujo.
 3. **Apariencia** e **Inicio** → escoge paleta, modo, logo y textos; muestra, oculta y ordena las secciones.
 4. Toca **Publicar cambios**. La tienda se actualiza en segundos.
 

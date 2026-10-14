@@ -74,8 +74,19 @@ export type Appearance = {
   modeToggle: boolean;
   /** Estrellas animadas de fondo en el modo noche. */
   stars: boolean;
+  /** Cielo del modo día: sol, nubes que pasan y un atardecer al bajar. */
+  daySky: boolean;
   logo: LogoVariant;
+  /** Botón de música lo-fi, siempre visible en la esquina. */
+  music: boolean;
+  /** Que la música empiece al primer toque en la página (antes los navegadores no la dejan sonar). */
+  musicAutoplay: boolean;
 };
+
+export const MUSIC_TRACKS: { src: string; title: string }[] = [
+  { src: "/musica/noche-lofi.mp3", title: "Noche lo-fi" },
+  { src: "/musica/lluvia-suave.mp3", title: "Lluvia suave" },
+];
 
 export type HomeContent = {
   heroTitle: string;

@@ -5,7 +5,10 @@ export const DEFAULT_APPEARANCE: Appearance = {
   mode: "claro",
   modeToggle: true,
   stars: true,
+  daySky: true,
   logo: "creciente",
+  music: true,
+  musicAutoplay: false,
 };
 
 export const DEFAULT_HOME: HomeContent = {

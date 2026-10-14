@@ -150,24 +150,58 @@ export async function readVersion(id: string): Promise<Catalog | null> {
   return null;
 }
 
+/** Lado más largo de una foto guardada: nítida en pantallas retina sin pesar de más. */
+const PHOTO_MAX_SIDE = 1800;
+
+/**
+ * Deja la foto lista para la web: la endereza según la cámara, la reduce si es enorme,
+ * le quita los datos ocultos (ubicación, modelo del teléfono) y la guarda en WebP.
+ * Si algo falla, se guarda tal como llegó.
+ */
+async function optimizePhoto(file: File): Promise<{ data: Buffer; type: string; ext: string }> {
+  const original = Buffer.from(await file.arrayBuffer());
+  const fallback = {
+    data: original,
+    type: file.type,
+    ext: (file.type.split("/")[1] || "jpg").replace("jpeg", "jpg").replace(/[^a-z0-9]/g, ""),
+  };
+  if (file.type === "image/gif") return fallback;
+  try {
+    const sharp = (await import("sharp")).default;
+    const data = await sharp(original)
+      .rotate()
+      .resize({ width: PHOTO_MAX_SIDE, height: PHOTO_MAX_SIDE, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 84, effort: 5, smartSubsample: true })
+      .toBuffer();
+    // Si la versión nueva no ahorra nada (ya venía optimizada), se queda la original.
+    if (data.length >= original.length && file.type === "image/webp") return fallback;
+    return { data, type: "image/webp", ext: "webp" };
+  } catch (error) {
+    console.error("[optimizePhoto]", error);
+    return fallback;
+  }
+}
+
 /** Guarda una imagen subida desde el admin y devuelve su URL pública. */
-export async function storeImage(file: File, folder: "products" | "site"): Promise<string> {
+export async function storeImage(file: File, folder: "products" | "site"): Promise<{ url: string; bytes: number }> {
   const mode = storageMode();
-  const ext = (file.type.split("/")[1] || "jpg").replace("jpeg", "jpg").replace(/[^a-z0-9]/g, "");
-  const name = `${folder}/${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  if (mode === "readonly") throw new Error("Falta conectar el almacenamiento (Vercel Blob) para subir fotos.");
+  const photo = await optimizePhoto(file);
+  const name = `${folder}/${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}.${photo.ext}`;
   if (mode === "blob") {
-    const blob = await put(name, file, {
+    const blob = await put(name, photo.data, {
       access: "public",
       addRandomSuffix: false,
-      contentType: file.type,
+      contentType: photo.type,
+      cacheControlMaxAge: 60 * 60 * 24 * 365,
     });
-    return blob.url;
+    return { url: blob.url, bytes: photo.data.length };
   }
   if (mode === "file") {
     const target = path.join(process.cwd(), "public", "uploads", name);
     await fs.mkdir(path.dirname(target), { recursive: true });
-    await fs.writeFile(target, Buffer.from(await file.arrayBuffer()));
-    return `/uploads/${name}`;
+    await fs.writeFile(target, photo.data);
+    return { url: `/uploads/${name}`, bytes: photo.data.length };
   }
   throw new Error("Falta conectar el almacenamiento (Vercel Blob) para subir fotos.");
 }
@@ -285,7 +319,10 @@ function normalizeAppearance(raw: unknown, legacyTheme?: unknown): Appearance {
     mode: a.mode === "claro" || a.mode === "oscuro" || a.mode === "auto" ? a.mode : legacy === "noche" ? "oscuro" : d.mode,
     modeToggle: typeof a.modeToggle === "boolean" ? a.modeToggle : d.modeToggle,
     stars: typeof a.stars === "boolean" ? a.stars : d.stars,
+    daySky: typeof a.daySky === "boolean" ? a.daySky : d.daySky,
     logo: LOGOS.some((l) => l.id === a.logo) ? (a.logo as Appearance["logo"]) : d.logo,
+    music: typeof a.music === "boolean" ? a.music : d.music,
+    musicAutoplay: typeof a.musicAutoplay === "boolean" ? a.musicAutoplay : d.musicAutoplay,
   };
 }
 

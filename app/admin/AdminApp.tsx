@@ -5,6 +5,7 @@ import { Mark, ProductArt, plateFor } from "@/components/Art";
 import { money, statusLabel } from "@/lib/format";
 import {
   LOGOS,
+  MUSIC_TRACKS,
   PALETTES,
   SECTIONS,
   type Appearance,
@@ -67,9 +68,16 @@ function move<T>(list: T[], index: number, delta: number) {
   return copy;
 }
 
-/** Reduce la foto en el navegador antes de subirla: carga rápida y sin pasar el límite. */
-async function shrinkImage(file: File, maxSide = 1600): Promise<File> {
+/** Hasta este peso la foto viaja tal cual y el servidor la optimiza una sola vez (mejor calidad). */
+const SEND_AS_IS = 3.5 * 1024 * 1024;
+
+/**
+ * Solo si la foto es muy pesada se reduce primero en el teléfono, con calidad alta,
+ * para no pasar el límite de subida. La compresión final la hace el servidor.
+ */
+async function shrinkImage(file: File, maxSide = 2400): Promise<File> {
   if (file.type === "image/gif") return file;
+  if (file.size <= SEND_AS_IS && ["image/jpeg", "image/png", "image/webp"].includes(file.type)) return file;
   try {
     const bitmap = await createImageBitmap(file);
     const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
@@ -77,7 +85,7 @@ async function shrinkImage(file: File, maxSide = 1600): Promise<File> {
     canvas.width = Math.round(bitmap.width * scale);
     canvas.height = Math.round(bitmap.height * scale);
     canvas.getContext("2d")?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/webp", 0.86));
+    const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/webp", 0.92));
     if (!blob) return file;
     return new File([blob], file.name.replace(/\.\w+$/, "") + ".webp", { type: "image/webp" });
   } catch {
@@ -91,9 +99,13 @@ async function uploadImage(file: File, folder: "products" | "site") {
   body.append("file", small);
   body.append("folder", folder);
   const res = await fetch("/api/admin/upload", { method: "POST", body });
-  const json = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
+  const json = (await res.json().catch(() => ({}))) as { url?: string; bytes?: number; error?: string };
   if (!res.ok || !json.url) throw new Error(json.error || "No se pudo subir la foto.");
-  return json.url;
+  return { url: json.url, before: file.size, after: json.bytes ?? small.size };
+}
+
+function formatBytes(n: number) {
+  return n >= 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1).replace(".", ",")} MB` : `${Math.max(1, Math.round(n / 1024))} KB`;
 }
 
 /* ===================================================================== */
@@ -439,6 +451,7 @@ function ProductEditor({
   onError: (text: string) => void;
 }) {
   const [uploading, setUploading] = useState(0);
+  const [saved, setSaved] = useState<{ before: number; after: number } | null>(null);
   const [slugTouched, setSlugTouched] = useState(!product.slug.startsWith("nuevo-"));
   const [sizesText, setSizesText] = useState(product.sizes.join(", "));
 
@@ -448,16 +461,24 @@ function ProductEditor({
       const list = Array.from(files);
       setUploading((n) => n + list.length);
       const urls: string[] = [];
+      let before = 0;
+      let after = 0;
       for (const file of list) {
         try {
-          urls.push(await uploadImage(file, "products"));
+          const up = await uploadImage(file, "products");
+          urls.push(up.url);
+          before += up.before;
+          after += up.after;
         } catch (error) {
           onError(error instanceof Error ? error.message : "No se pudo subir la foto.");
         } finally {
           setUploading((n) => n - 1);
         }
       }
-      if (urls.length) update({ images: [...product.images, ...urls] });
+      if (urls.length) {
+        update({ images: [...product.images, ...urls] });
+        setSaved({ before, after });
+      }
     },
     [product.images, update, onError],
   );
@@ -625,7 +646,10 @@ function ProductEditor({
 
       <fieldset className="a-fieldset">
         <legend>Fotos</legend>
-        <p className="a-muted">La primera foto es la portada. Se ven mejor cuadradas o verticales, con buena luz.</p>
+        <p className="a-muted">
+          La primera foto es la portada. Se ven mejor cuadradas o verticales, con buena luz. Sube las fotos tal como salen del
+          teléfono: la tienda las comprime sola sin perder nitidez.
+        </p>
         <ul className="a-photos">
           {product.images.map((src, i) => (
             <li key={src}>
@@ -660,6 +684,12 @@ function ProductEditor({
             </label>
           </li>
         </ul>
+        {saved && saved.after < saved.before ? (
+          <p className="a-saved" role="status">
+            Fotos optimizadas: {formatBytes(saved.before)} → {formatBytes(saved.after)} (
+            {Math.round((1 - saved.after / saved.before) * 100)}% más livianas).
+          </p>
+        ) : null}
         {product.images.length === 0 ? (
           <div className="a-artpick">
             <div className="a-artpick__preview" style={{ background: plateFor(product.colors[0]?.hex) }}>
@@ -826,9 +856,42 @@ function AppearanceTab({ settings, setSettings }: { settings: Settings; setSetti
           <span>Mostrar el botón de día/noche en la barra</span>
         </label>
         <label className="a-check">
+          <input type="checkbox" checked={a.daySky} onChange={(e) => set({ daySky: e.target.checked })} />
+          <span>Cielo en el modo día: sol, nubes que pasan y un atardecer al bajar por la página</span>
+        </label>
+        <label className="a-check">
           <input type="checkbox" checked={a.stars} onChange={(e) => set({ stars: e.target.checked })} />
           <span>Estrellas animadas de fondo en el modo noche</span>
         </label>
+      </div>
+
+      <h2>Música</h2>
+      <p className="a-muted">
+        Un botón en la esquina con música lo-fi para dormir ({MUSIC_TRACKS.map((t) => t.title).join(" y ")}). Cada
+        visitante la prende o la apaga cuando quiera, y la página recuerda lo que eligió.
+      </p>
+      <div className="a-checks">
+        <label className="a-check">
+          <input type="checkbox" checked={a.music} onChange={(e) => set({ music: e.target.checked })} />
+          <span>Mostrar el botón de música</span>
+        </label>
+        <label className="a-check" data-off={!a.music}>
+          <input
+            type="checkbox"
+            checked={a.musicAutoplay}
+            disabled={!a.music}
+            onChange={(e) => set({ musicAutoplay: e.target.checked })}
+          />
+          <span>Que empiece a sonar sola con el primer toque en la página (antes de eso los navegadores no dejan)</span>
+        </label>
+      </div>
+      <div className="a-tracks">
+        {MUSIC_TRACKS.map((t) => (
+          <figure key={t.src}>
+            <figcaption>{t.title}</figcaption>
+            <audio controls preload="none" src={t.src} />
+          </figure>
+        ))}
       </div>
 
       <h2>Logo</h2>

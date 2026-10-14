@@ -66,3 +66,18 @@ export const SunIcon = (p: IconProps) => (
     <path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
   </Base>
 );
+
+export const NoteIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M9 18V6l11-2v12" />
+    <circle cx="6.5" cy="18" r="2.5" />
+    <circle cx="17.5" cy="16" r="2.5" />
+  </Base>
+);
+
+export const SkipIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M6 6.5v11l8.5-5.5L6 6.5Z" />
+    <path d="M18 6v12" />
+  </Base>
+);

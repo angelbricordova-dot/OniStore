@@ -44,6 +44,9 @@ The name plays on "onírico" (of dreams). It does not sell clothing in general: 
 - Voice: warm, close, Venezuelan Spanish, "tú".
 - The owner wants the site smooth and calm, in the spirit of Apple's product pages: lots of space, clean type, little visual noise. A busy, ornamental style (the kinetic "cromointerferencia" floor) was tried and rejected.
 - The colour palette is switchable from /admin (Luna, Lavanda, Durazno), each with a day and a night version. Night mode shows a softly twinkling star field; visitors can switch modes from the nav.
+- Day mode has its own sky (sun, drifting clouds, light motes, and a sunset as you scroll) so it is as distinctive as night mode.
+- Optional lo-fi sleep music: an always-visible button, never plays without a tap, owner can hide it. Two original tracks generated for the shop.
+- Photos uploaded in the admin are compressed automatically (1800 px WebP, metadata stripped) and served responsively, so the owner can upload straight from the phone.
 - No giant product at the top of the home page: the hero is text first; a featured product below it is optional.
 
 ## Evidence on Hand

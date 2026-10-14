@@ -124,9 +124,16 @@ Tres paletas (Luna, Lavanda, Durazno), cada una con fondo, fondo alterno, tinta,
 
 ## Día y noche
 
+- **Día:** un cielo detrás de todo. Arriba un degradado suave del color de la paleta, un sol pequeño con un halo que respira, cinco nubes que cruzan muy despacio (de 3,5 a 5 minutos cada una) y motas de luz que suben como polvo en un rayo de sol. Al bajar por la página el sol desciende y el cielo se vuelve atardecer, hasta ponerse detrás del pie de página: la página va del día a la noche, como el cliente.
+- **Noche:** el cielo de estrellas descrito abajo.
+
 - El botón de la barra (sol/luna) cambia el modo con un círculo que se expande desde el botón (View Transitions) y recuerda la elección de cada visitante.
 - En el modo noche aparece un cielo fijo detrás de todo: unas 110 estrellas que entran escalonadas y titilan despacio, algunas doradas, y dos estrellas fugaces muy espaciadas. Con "reducir movimiento" quedan quietas.
 - La dueña puede apagar las estrellas o el botón desde /admin.
+
+## Música
+
+Una pastilla de vidrio en la esquina inferior izquierda, siempre visible: nota musical en reposo, cuatro barras que se mueven mientras suena y un botón para pasar a la siguiente canción. En el teléfono se presenta unos segundos ("Música para dormir") y queda solo el círculo. Nunca suena sin que la persona lo pida; sube y baja con fundidos suaves y sigue sonando al pasar de una página a otra. Dos pistas lo-fi originales en `public/musica/` (normalizadas a -19 LUFS, 96 kbps).
 
 ## Logo
 
@@ -188,7 +195,7 @@ Esquinas redondeadas y generosas: 28px en mosaicos y fondos de producto grandes,
 - **Do** cambiar paleta, modo, logo y secciones solo desde /admin, sin tocar el código.
 
 ### Don't:
-- **Don't** volver a efectos de fondo animados, rayas o texturas: el estilo cinético se probó y se descartó. Las estrellas del modo noche son la única capa de fondo.
+- **Don't** volver a efectos de fondo animados, rayas o texturas: el estilo cinético se probó y se descartó. El cielo del día y las estrellas de la noche son las únicas capas de fondo.
 - **Don't** poner un producto gigante al abrir la página, ni nombrar a la persona detrás de la tienda.
 - **Don't** usar más de un color de acento a la vez.
 - **Don't** poner etiquetas pequeñas encima de los títulos.

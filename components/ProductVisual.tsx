@@ -26,6 +26,7 @@ export function ProductVisual({
         alt={product.name}
         fill
         sizes={sizes}
+        quality={85}
         priority={priority}
         className={className ? `${className} visual-photo` : "visual-photo"}
       />

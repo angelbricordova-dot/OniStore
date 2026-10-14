@@ -3,7 +3,9 @@ import { BagProvider } from "./Bag";
 import { Footer } from "./Footer";
 import { Motion, motionBootScript } from "./Motion";
 import { sectionLinks } from "@/lib/defaults";
+import { MusicPlayer } from "./MusicPlayer";
 import { Nav } from "./Nav";
+import { DaySky } from "./DaySky";
 import { StarField } from "./StarField";
 
 /**
@@ -30,6 +32,7 @@ export function SiteShell({ settings, children }: { settings: Settings; solidNav
       suppressHydrationWarning
     >
       <script dangerouslySetInnerHTML={{ __html: bootScript(a.mode, a.modeToggle) }} />
+      {a.daySky ? <DaySky /> : null}
       {a.stars ? <StarField /> : null}
       <BagProvider settings={settings}>
         <script dangerouslySetInnerHTML={{ __html: motionBootScript }} />
@@ -40,6 +43,7 @@ export function SiteShell({ settings, children }: { settings: Settings; solidNav
         <Nav storeName={settings.storeName} logo={a.logo} modeToggle={a.modeToggle} links={sectionLinks(settings.home)} />
         <main id="contenido">{children}</main>
         <Footer settings={settings} />
+        {a.music ? <MusicPlayer autoplay={a.musicAutoplay} /> : null}
         <Motion />
       </BagProvider>
     </div>
