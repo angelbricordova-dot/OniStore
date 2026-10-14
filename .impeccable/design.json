@@ -1,0 +1,332 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T00:59:55.646349+00:00",
+  "title": "Design System: OniStore",
+  "extensions": {
+    "colorMeta": {
+      "medianoche": {
+        "role": "neutral",
+        "displayName": "Medianoche",
+        "canonical": "#0A0A33",
+        "tonalRamp": [
+          "#03030F",
+          "#05051A",
+          "#070724",
+          "#09092D",
+          "#2F2F52",
+          "#6C6C85",
+          "#A9A9B8",
+          "#DADAE0"
+        ]
+      },
+      "medianoche-2": {
+        "role": "neutral",
+        "displayName": "Medianoche 2",
+        "canonical": "#15144A",
+        "tonalRamp": [
+          "#060616",
+          "#0A0A25",
+          "#0F0E34",
+          "#121241",
+          "#383765",
+          "#737292",
+          "#ADADC0",
+          "#DCDCE4"
+        ]
+      },
+      "medianoche-3": {
+        "role": "neutral",
+        "displayName": "Medianoche 3",
+        "canonical": "#1F1D5C",
+        "tonalRamp": [
+          "#09091C",
+          "#100E2E",
+          "#161440",
+          "#1B1A51",
+          "#413F74",
+          "#79779D",
+          "#B1B0C6",
+          "#DDDDE7"
+        ]
+      },
+      "ciruela": {
+        "role": "tertiary",
+        "displayName": "Ciruela",
+        "canonical": "#38125C",
+        "tonalRamp": [
+          "#11051C",
+          "#1C092E",
+          "#270D40",
+          "#311051",
+          "#563674",
+          "#88719D",
+          "#B9ACC6",
+          "#E1DBE7"
+        ]
+      },
+      "ciruela-2": {
+        "role": "tertiary",
+        "displayName": "Ciruela clara",
+        "canonical": "#4A1F73",
+        "tonalRamp": [
+          "#160923",
+          "#25103A",
+          "#341650",
+          "#411B65",
+          "#654188",
+          "#9279AB",
+          "#C0B1CE",
+          "#E4DDEA"
+        ]
+      },
+      "magenta": {
+        "role": "secondary",
+        "displayName": "Magenta",
+        "canonical": "#A11370",
+        "tonalRamp": [
+          "#300622",
+          "#500A38",
+          "#710D4E",
+          "#8E1163",
+          "#AF3685",
+          "#C771A9",
+          "#DEACCD",
+          "#F1DCEA"
+        ]
+      },
+      "coral": {
+        "role": "secondary",
+        "displayName": "Coral",
+        "canonical": "#F95C42",
+        "tonalRamp": [
+          "#4B1C14",
+          "#7C2E21",
+          "#AE402E",
+          "#DB513A",
+          "#FA745E",
+          "#FB9D8E",
+          "#FDC6BD",
+          "#FEE7E3"
+        ]
+      },
+      "dorado": {
+        "role": "primary",
+        "displayName": "Dorado del atardecer",
+        "canonical": "#FFBF42",
+        "tonalRamp": [
+          "#4D3914",
+          "#806021",
+          "#B2862E",
+          "#E0A83A",
+          "#FFC95E",
+          "#FFD98E",
+          "#FFE9BD",
+          "#FFF5E3"
+        ]
+      },
+      "dorado-claro": {
+        "role": "primary",
+        "displayName": "Dorado claro",
+        "canonical": "#FFCF6E",
+        "tonalRamp": [
+          "#4D3E21",
+          "#806837",
+          "#B2914D",
+          "#E0B661",
+          "#FFD684",
+          "#FFE2A8",
+          "#FFEECC",
+          "#FFF8E9"
+        ]
+      },
+      "durazno": {
+        "role": "tertiary",
+        "displayName": "Durazno",
+        "canonical": "#FFA385",
+        "tonalRamp": [
+          "#4D3128",
+          "#805242",
+          "#B2725D",
+          "#E08F75",
+          "#FFB197",
+          "#FFC8B6",
+          "#FFDFD4",
+          "#FFF1ED"
+        ]
+      },
+      "crema": {
+        "role": "neutral",
+        "displayName": "Crema",
+        "canonical": "#F7ECE1",
+        "tonalRamp": [
+          "#4A4744",
+          "#7C7670",
+          "#ADA59E",
+          "#D9D0C6",
+          "#F8EFE6",
+          "#FAF4ED",
+          "#FCF8F4",
+          "#FEFCFA"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hora recomendada y texto recortado del piso."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Títulos de sección y nombre de producto."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Preguntas, nombres en fichas, precios."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto de lectura."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Frases de apoyo."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Botones, pestañas y leyendas."
+      }
+    },
+    "shadows": [
+      {
+        "name": "panel-flotante",
+        "value": "-24px 0 60px rgba(0,0,0,0.45)",
+        "purpose": "Solo el cajón de la bolsa."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Entradas, presión de botones, láminas que se abren."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "purpose": "Marcas que se desplazan en el planificador."
+      },
+      {
+        "name": "ease-drawer",
+        "value": "cubic-bezier(0.32, 0.72, 0, 1)",
+        "purpose": "Cajón de la bolsa."
+      },
+      {
+        "name": "slats-open",
+        "value": "1000ms ease-out, máscara de láminas de 14px",
+        "purpose": "Revelado de secciones."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "860px"
+      },
+      {
+        "name": "tablet",
+        "value": "1100px"
+      },
+      {
+        "name": "narrow-phone",
+        "value": "420px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "La acción: añadir a la bolsa, abrir WhatsApp.",
+      "html": "<button class=\"ds-btn-primary\">Añadir a la bolsa</button>",
+      "css": ".ds-btn-primary{background:#FFBF42;color:#0A0A33;border:0;border-radius:999px;min-height:52px;padding:14px 24px;font:700 16px Figtree,system-ui,sans-serif;transition:transform 160ms cubic-bezier(0.23,1,0.32,1),background-color 200ms ease}.ds-btn-primary:hover{background:#FFCF6E}.ds-btn-primary:active{transform:scale(0.97)}.ds-btn-primary:focus-visible{outline:3px solid #FFBF42;outline-offset:3px}"
+    },
+    {
+      "name": "Botón fantasma",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Acción secundaria sobre Medianoche.",
+      "html": "<button class=\"ds-btn-ghost\">Pedir por WhatsApp</button>",
+      "css": ".ds-btn-ghost{background:rgba(247,236,225,0.12);color:#F7ECE1;border:0;border-radius:999px;min-height:52px;padding:14px 24px;font:700 16px Figtree,system-ui,sans-serif;transition:transform 160ms cubic-bezier(0.23,1,0.32,1),background-color 200ms ease}.ds-btn-ghost:hover{background:rgba(247,236,225,0.2)}.ds-btn-ghost:active{transform:scale(0.97)}"
+    },
+    {
+      "name": "Talla",
+      "kind": "chip",
+      "refersTo": "size-option",
+      "description": "Opción de talla; dorada cuando está elegida.",
+      "html": "<div style=\"display:flex;gap:10px;background:#0A0A33;padding:16px\"><button class=\"ds-size\">S</button><button class=\"ds-size ds-size--on\">M</button><button class=\"ds-size\">L</button></div>",
+      "css": ".ds-size{min-width:54px;min-height:46px;border:0;border-radius:999px;background:rgba(247,236,225,0.12);color:#F7ECE1;font:700 16px Figtree,sans-serif}.ds-size--on{background:#FFBF42;color:#0A0A33}.ds-size:active{transform:scale(0.95)}"
+    },
+    {
+      "name": "Placa de láminas",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "El piso en CSS detrás de cada producto.",
+      "html": "<div class=\"ds-slats\"></div>",
+      "css": ".ds-slats{width:240px;height:300px;background-image:repeating-linear-gradient(90deg,transparent 0 9px,rgba(10,10,51,0.5) 9px 11px,rgba(247,236,225,0.34) 11px 12px),linear-gradient(90deg,#FFBF42,#FFA385,#E3C9D6,#FFA385,#F95C42);transition:background-position 900ms cubic-bezier(0.23,1,0.32,1)}.ds-slats:hover{background-position:22px 0,0 0}"
+    },
+    {
+      "name": "Pestaña de categoría",
+      "kind": "nav",
+      "refersTo": "tab-selected",
+      "description": "Filtro de la colección con conteo.",
+      "html": "<div style=\"display:flex;gap:8px;background:#0A0A33;padding:16px\"><button class=\"ds-tab ds-tab--on\">Todo <span>7</span></button><button class=\"ds-tab\">Pijamas <span>4</span></button></div>",
+      "css": ".ds-tab{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:8px 10px 8px 18px;border:0;border-radius:999px;background:rgba(247,236,225,0.12);color:#F7ECE1;font:700 15px Figtree,sans-serif}.ds-tab span{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:999px;background:rgba(247,236,225,0.12);font-size:13px}.ds-tab--on{background:#F7ECE1;color:#0A0A33}.ds-tab--on span{background:rgba(10,10,51,0.12)}"
+    },
+    {
+      "name": "Pregunta frecuente",
+      "kind": "custom",
+      "refersTo": "faq-item",
+      "description": "Details en Medianoche 2; Ciruela al abrir.",
+      "html": "<details class=\"ds-faq\" open><summary>¿Cómo sé cuál es mi talla?</summary><p>Escríbenos tu estatura y te recomendamos.</p></details>",
+      "css": ".ds-faq{background:#15144A;color:#F7ECE1}.ds-faq[open]{background:#38125C}.ds-faq summary{padding:18px 22px;font:700 24px Anybody,sans-serif;cursor:pointer;list-style:none}.ds-faq p{padding:0 22px 22px;font:400 17px/1.6 Figtree,sans-serif}"
+    }
+  ],
+  "narrative": {
+    "northStar": "El piso de la noche",
+    "overview": "OniStore se construye sobre un piso de cromointerferencia, en la tradición del arte cinético venezolano: láminas verticales de dos caras, con una línea fina en el filo, que mezclan en el ojo los colores de la marca y producen el atardecer sin pintarlo. Cuando el visitante mueve el dedo, el mouse o el teléfono, las láminas giran y el piso pasa de la tarde a la noche. Todo lo demás (letras, productos, botones) se para sobre ese piso o se recorta de él.\n\nLa página es de noche porque así se usa: alguien acostado, con el teléfono en la mano, entrando desde Instagram. El fondo es Medianoche a plena fuerza y el color vive en campos de láminas, nunca como acentos sueltos sobre un fondo neutro. La densidad es de tienda: los productos se ven grandes, y entre capítulos el piso aparece como una franja de ancho completo.",
+    "keyCharacteristics": [
+      "Fondo Medianoche; el color vive en campos de láminas, no en manchas.",
+      "Títulos en Anybody, una grotesca de ancho variable que se estira con el movimiento.",
+      "Texto recortado del piso en los momentos grandes (héroe y cierre).",
+      "Campos y fichas de esquina recta; los controles siempre redondos.",
+      "Las entradas se abren como láminas que giran."
+    ],
+    "rules": [
+      {
+        "name": "Floor Carries The Colour",
+        "body": "Los siete colores aparecen juntos solo en el piso de láminas. Fuera del piso, un elemento usa un color con un trabajo concreto: dorado para actuar, coral para avisar, crema para leer."
+      },
+      {
+        "name": "Night Ground",
+        "body": "El fondo es siempre Medianoche. No hay fondos crema ni claros en las páginas de la tienda."
+      },
+      {
+        "name": "Kinetic Width",
+        "body": "El ancho de Anybody es parte del movimiento: las palabras de \"Cómo pedir\" llegan condensadas (62 %) y se abren a 100 %. No se usa ancho variable como adorno en el texto de lectura."
+      }
+    ],
+    "dos": [
+      "poner el color en campos de láminas que ocupen regiones enteras.",
+      "recortar los títulos grandes del piso en el héroe y en el cierre.",
+      "dar a cada acción el dorado, y a nada más.",
+      "dejar que el piso responda al visitante y que se detenga fuera de pantalla o con \"reducir movimiento\".",
+      "reemplazar los dibujos de producto por fotos reales en cuanto existan; la placa de láminas queda detrás de la foto recortada."
+    ],
+    "donts": [
+      "usar fondos crema ni claros en las páginas de la tienda.",
+      "usar degradados suaves como fondo de sección; el color se mezcla en las láminas.",
+      "poner etiquetas pequeñas encima de los títulos.",
+      "redondear campos, placas o fichas; solo los controles son redondos.",
+      "inventar testimonios, cifras ni procesos que la tienda no haya confirmado."
+    ]
+  }
+}

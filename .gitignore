@@ -11,3 +11,8 @@ next-env.d.ts
 data/catalog.local.json
 data/versions
 public/uploads
+
+# capturas y rondas locales de impeccable
+.impeccable/review
+.impeccable/questions
+.impeccable/mocks

@@ -1,9 +1,9 @@
 # OniStore
 
-Tienda de pijamas y de todo lo que ayuda a dormir mejor. La página es una noche entera: empieza en el atardecer, pasa por la medianoche y termina en el amanecer, con los colores de la marca.
+Tienda de pijamas y de todo lo que ayuda a dormir mejor. El diseño es un piso de cromointerferencia, en la tradición del arte cinético venezolano: láminas de color que mezclan la paleta de la marca y giran cuando el visitante se mueve. El sistema visual está en `DESIGN.md` y los datos del negocio en `PRODUCT.md`.
 
 - **Tienda**: catálogo por categorías, ficha de cada producto, bolsa y pedido por WhatsApp con el mensaje ya escrito.
-- **Calculadora de sueño**: dice a qué hora acostarse según la hora de la alarma (ciclos de 90 minutos).
+- **Tu noche, en ciclos**: dice a qué hora acostarse según la hora de la alarma (ciclos de 90 minutos) y dibuja la noche como una línea de tiempo.
 - **`/admin`**: panel para que Oniris administre productos, fotos, precios, categorías, textos, preguntas frecuentes y el número de WhatsApp. Cada publicación guarda una copia en el historial (las últimas 30) y se puede volver atrás.
 - **`/marca`**: kit de marca con el logo, la paleta, las letras, la foto de perfil y las portadas de historias destacadas para Instagram y TikTok (PNG de 1080 × 1080 en `public/marca/`).
 
@@ -39,6 +39,7 @@ Abre http://localhost:3000. En local, `/admin` usa la contraseña `oniris` (si n
 - `app/page.tsx`: la página de inicio, capítulo por capítulo.
 - `app/producto/[slug]`: la ficha de cada producto.
 - `app/admin`: el panel y sus acciones del servidor.
+- `components/Lamellae.tsx`: el piso de láminas (canvas) que da vida a toda la página.
 - `components/Art.tsx`: el logo (la luna dormida) y los dibujos de los productos.
 - `lib/catalog.ts`: dónde se lee y guarda el catálogo (Vercel Blob en producción, archivo local en desarrollo).
 - `lib/seed.ts`: el catálogo de ejemplo con el que arranca la tienda.

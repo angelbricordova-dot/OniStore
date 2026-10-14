@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, Fraunces } from "next/font/google";
+import { Anybody, Figtree } from "next/font/google";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
-const display = Fraunces({
+const display = Anybody({
   subsets: ["latin"],
-  axes: ["SOFT", "opsz"],
+  axes: ["wdth"],
   variable: "--font-display",
   display: "swap",
 });

@@ -89,11 +89,11 @@
 }
 .brand__fraunces {
   font-family: var(--font-display);
-  font-variation-settings: "SOFT" 100;
   font-size: var(--t-display);
-  font-weight: 560;
+  font-weight: 900;
+  font-stretch: 140%;
   line-height: 0.9;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.03em;
 }
 .brand__social {
   display: grid;
@@ -127,7 +127,8 @@
 }
 .avatar--name .wordmark {
   position: relative;
-  font-size: clamp(30px, 4.6vw, 64px);
+  font-size: clamp(24px, 3.2vw, 44px);
+  font-stretch: 100%;
   color: var(--cream);
 }
 .avatar svg:not(.avatar__stars) {

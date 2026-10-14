@@ -87,8 +87,8 @@ export default function MarcaPage() {
       <section className="brand__block">
         <h2 className="brand__h">Letras</h2>
         <div className="brand__type">
-          <p className="brand__fraunces">Fraunces, suave</p>
-          <p>Figtree para todo lo que se lee: descripciones, precios, botones y el panel.</p>
+          <p className="brand__fraunces">Anybody, ancha</p>
+          <p>Anybody, de ancho variable, para títulos y el logotipo: se estira con el movimiento. Figtree para todo lo que se lee: descripciones, precios, botones y el panel.</p>
         </div>
       </section>
 

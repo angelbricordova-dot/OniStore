@@ -1,215 +1,140 @@
 import Image from "next/image";
-import { Catalog } from "@/components/Catalog";
-import { GiftArt, ChatArt, Mark, PajamaArt, PillowArt, Stars } from "@/components/Art";
-import { Showcase } from "@/components/Showcase";
+import { Mark } from "@/components/Art";
+import { Collection } from "@/components/Collection";
+import { HeroFloor } from "@/components/HeroFloor";
+import { Lamellae } from "@/components/Lamellae";
+import { NightPlanner } from "@/components/NightPlanner";
 import { SiteShell } from "@/components/SiteShell";
-import { SleepCalculator } from "@/components/SleepCalculator";
 import { getCatalog } from "@/lib/catalog";
+import { DUSK_A, DUSK_B, NIGHT_A, NIGHT_B } from "@/lib/palette";
 import { whatsappLink } from "@/lib/format";
+import { slats } from "@/lib/slats";
 
 export const revalidate = 300;
+
+const STEPS = [
+  {
+    word: "Eliges",
+    text: "Mira la colección, toca la pijama que te guste y escoge talla y color. Puedes juntar varias en la bolsa.",
+  },
+  {
+    word: "Nos escribes",
+    text: "Un toque y WhatsApp se abre con tu pedido ya escrito. Te confirmamos disponibilidad, total y forma de pago.",
+  },
+  {
+    word: "Duermes",
+    text: "",
+  },
+];
 
 export default async function Home() {
   const { settings, categories, products: all } = await getCatalog();
   const products = all.filter((p) => !p.hidden);
   const featured = products.find((p) => p.featured) ?? products[0];
-  const hello = whatsappLink(settings, `¡Hola ${settings.storeName}! Quiero ayuda para elegir mi pijama.`);
-  const title = ["Duerme", "bonito"];
+  const hello = whatsappLink(settings, `¡Hola ${settings.storeName}! Quiero ayuda para escoger mi pijama.`);
 
   return (
     <SiteShell settings={settings}>
-      {/* ---------- Atardecer: el título se refleja en el mar del sueño ---------- */}
-      <section className="hero" aria-labelledby="hero-title">
-        <div className="hero__sky" aria-hidden="true">
-          <div className="hero__sun" />
-        </div>
-        <div className="hero__sea" aria-hidden="true">
-          <div className="hero__reflection" />
-          <Stars className="hero__stars" count={40} seed={3} />
-        </div>
-        <div className="hero__layer hero__layer--sky">
-          <h1 id="hero-title" className="hero__title">
-            {title.map((line, i) => (
-              <span className="mline" key={line}>
-                <span style={{ "--d": `${i * 110}ms` } as React.CSSProperties}>{line}</span>
-              </span>
-            ))}
-          </h1>
-        </div>
-        <div className="hero__layer hero__layer--sea" aria-hidden="true">
-          <p className="hero__title">
-            {title.map((line, i) => (
-              <span className="mline" key={line}>
-                <span style={{ "--d": `${i * 110}ms` } as React.CSSProperties}>{line}</span>
-              </span>
-            ))}
-          </p>
-        </div>
-        <div className="hero__foot">
-          <p className="hero__lede">
-            Pijamas suaves y pequeños rituales para dormir mejor. Elige aquí, pide por WhatsApp.
-          </p>
-          <a className="btn btn--gold" href="#catalogo">
-            Ver el catálogo
-          </a>
-        </div>
-      </section>
+      <HeroFloor product={featured} settings={settings} />
 
       {/* ---------- El nombre ---------- */}
-      <section className="chapter chapter--ground intro" aria-labelledby="intro-title">
-        <div className="tiles">
-          <div className="tile tile--a" data-reveal>
-            <h2 id="intro-title" className="display">
-              Oni viene
-              <br />
-              de Oniris
-            </h2>
-          </div>
-          <div className="tile tile--b" data-reveal aria-label="Entre siete y nueve horas de sueño">
-            <span className="display" aria-hidden="true">
-              7–9 h
-            </span>
-          </div>
-          <div className="tile tile--c" data-reveal aria-hidden="true">
-            <Stars className="tile__stars" count={26} seed={5} />
-            <Mark size="62%" className="tile__mark" />
-          </div>
-          <div className="tile tile--text" data-reveal>
-            <p className="statement">
-              Oni viene de Oniris, la mujer que empezó esta tienda, y también de onírico: todo lo que pertenece a los
-              sueños.
-            </p>
-            <p>
-              Por eso no vendemos solo ropa para dormir. Escogemos cada pijama por cómo se siente a las tres de la
-              mañana: telas que respiran, costuras que no molestan, cinturas que no aprietan. Y alrededor de la pijama,
-              las cosas pequeñas que ayudan a que la noche salga bien: un antifaz que apaga la luz, una almohada que
-              sostiene el cuello, unas gomitas para el ritual de antes de dormir. Un adulto necesita entre siete y nueve
-              horas de sueño. Queremos que las tuyas sean buenas.
-            </p>
-          </div>
+      <section className="name" aria-labelledby="name-title">
+        <h2 id="name-title" className="name__title" data-reveal>
+          Oni viene de Oniris, la mujer detrás de esta tienda. Y de onírico: lo
+          que pertenece a los sueños.
+        </h2>
+        <div className="name__body" data-reveal>
+          <p>
+            Por eso aquí no hay ropa cualquiera. Cada pijama se escoge pensando en cómo se siente a las tres de la
+            mañana: telas que respiran, costuras que no molestan, cinturas que no aprietan.
+          </p>
+          <p>
+            Y alrededor de la pijama, lo pequeño que ayuda a que la noche salga bien: un antifaz, una almohada que
+            sostiene el cuello, un ritual antes de acostarte. Para ti, para tu hija, o para combinar en pareja.
+          </p>
         </div>
       </section>
 
-      {featured ? <Showcase product={featured} settings={settings} /> : null}
+      <div className="band" aria-hidden="true">
+        <Lamellae className="band__canvas" faceA={DUSK_A} faceB={NIGHT_B} slat={8} wave={0.18} />
+      </div>
 
-      <Catalog products={products} categories={categories} settings={settings} />
+      <Collection products={products} categories={categories} settings={settings} />
 
-      <SleepCalculator />
+      <div className="band band--tall" aria-hidden="true">
+        <Lamellae className="band__canvas" faceA={NIGHT_A} faceB={NIGHT_B} slat={9} wave={0.2} />
+      </div>
 
-      {/* ---------- Cómo pedir: los pasos crecen ---------- */}
-      <section className="chapter chapter--magenta how" id="como-pedir" aria-labelledby="how-title">
-        <div className="how__grid">
-          <h2 id="how-title" className="h2 how__title" data-reveal>
-            Pedir es así
-            <br />
-            de sencillo
-          </h2>
-          <figure className="how__step how__step--1" data-reveal>
-            <div className="how__tile" style={{ background: "var(--coral)" }}>
-              <PajamaArt color="#F7ECE1" className="how__art" />
-            </div>
-            <figcaption>
-              <h3>Eliges</h3>
-              <p>Mira el catálogo y añade a tu bolsa lo que te guste, con tu talla y tu color.</p>
-            </figcaption>
-          </figure>
-          <figure className="how__step how__step--2" data-reveal>
-            <div className="how__tile" style={{ background: "var(--peach)" }}>
-              <ChatArt className="how__art" />
-            </div>
-            <figcaption>
-              <h3>Nos escribes</h3>
-              <p>Un toque y WhatsApp se abre con tu pedido ya escrito. Te confirmamos disponibilidad y total.</p>
-            </figcaption>
-          </figure>
-          <figure className="how__step how__step--3" data-reveal>
-            <div className="how__tile" style={{ background: "var(--gold)" }}>
-              <GiftArt className="how__art" />
-            </div>
-            <figcaption>
-              <h3>Te llega</h3>
-              <p>{settings.delivery} Tú solo prepara la cama.</p>
-            </figcaption>
-          </figure>
-        </div>
+      <NightPlanner />
+
+      {/* ---------- Cómo pedir ---------- */}
+      <section className="steps" id="como-pedir" aria-labelledby="steps-title">
+        <h2 id="steps-title" className="sr-only">
+          Cómo pedir
+        </h2>
+        <ol className="steps__list">
+          {STEPS.map((s, i) => (
+            <li key={s.word} className="steps__item" data-reveal>
+              <span className="steps__floor slats" style={slats(i === 0 ? ["#A11370", "#F95C42"] : i === 1 ? ["#F95C42", "#FFBF42"] : ["#FFBF42", "#FFA385"])} aria-hidden="true" />
+              <p className="steps__word kin">{s.word}.</p>
+              <p className="steps__text">{s.text || `${settings.delivery} Tú solo prepara la cama.`}</p>
+            </li>
+          ))}
+        </ol>
       </section>
 
-      {/* ---------- Quiénes somos ---------- */}
-      <section className="chapter chapter--ground about" id="nosotros" aria-labelledby="about-title">
-        <div className="about__panel">
-          <h2 id="about-title" className="h2 about__title" data-reveal>
-            Hecho por Oniris,
-            <br />
-            para tus noches
-          </h2>
-          <div className="about__portrait" data-reveal>
+      {/* ---------- Oniris ---------- */}
+      <section className="oniris" id="nosotros" aria-labelledby="oniris-title">
+        <div className="oniris__field" data-reveal>
+          <Lamellae className="oniris__canvas" faceA={DUSK_A} faceB={DUSK_B} slat={9} wave={0.12} />
+          <div className="oniris__portrait">
             {settings.aboutImage ? (
-              <Image src={settings.aboutImage} alt="Oniris, fundadora de OniStore" fill sizes="(max-width: 760px) 86vw, 38vw" />
+              <Image src={settings.aboutImage} alt="Oniris, fundadora de OniStore" fill sizes="(max-width: 900px) 70vw, 30vw" />
             ) : (
-              <div className="about__moon" aria-hidden="true">
-                <PillowArt color="#F7ECE1" className="about__pillow" />
-              </div>
+              <Mark size="58%" className="oniris__mark" />
             )}
           </div>
-          <div className="about__blocks">
-            <div data-reveal>
-              <h3>Elegido a mano</h3>
-              <p>
-                Antes de que algo entre al catálogo, lo tocamos, lo lavamos y dormimos con él. Si no pasa la prueba de
-                la noche, no lo vendemos.
-              </p>
-            </div>
-            <div data-reveal>
-              <h3>Te atiende una persona</h3>
-              <p>
-                Del otro lado del WhatsApp está Oniris o alguien de la familia. Te ayudamos con tallas, colores y
-                regalos, sin apuro.
-              </p>
-            </div>
-            <a className="btn btn--gold" href={hello} target="_blank" rel="noopener" data-reveal>
-              Escríbenos
-            </a>
-          </div>
         </div>
-      </section>
-
-      {/* ---------- Preguntas: amanece ---------- */}
-      {settings.faq.length ? (
-        <section className="faq" id="preguntas" aria-labelledby="faq-title">
-          <div className="faq__head">
-            <h2 id="faq-title" className="display" data-reveal>
-              Lo que nos
-              <br />
-              preguntan
-            </h2>
-          </div>
-          {settings.faq.map((f) => (
-            <div className="faq__band" key={f.q}>
-              <h3 data-reveal>{f.q}</h3>
-              <p data-reveal>{f.a}</p>
-            </div>
-          ))}
-        </section>
-      ) : null}
-
-      {/* ---------- Cierre ---------- */}
-      <section className="cta" aria-labelledby="cta-title">
-        <div className="cta__flank cta__flank--left" aria-hidden="true">
-          <PajamaArt color="#38125C" className="cta__art" />
-        </div>
-        <div className="cta__main" data-reveal>
-          <h2 id="cta-title" className="h2">
-            Hablemos de
+        <div className="oniris__text">
+          <h2 id="oniris-title" className="h2" data-reveal>
+            Te atiende
             <br />
-            tu noche
+            Oniris
           </h2>
-          <p>Escríbenos y te ayudamos a elegir pijama, talla o un regalo para alguien que duerme poco.</p>
-          <a className="btn btn--dark" href={hello} target="_blank" rel="noopener">
-            Abrir WhatsApp
+          <p data-reveal>
+            Del otro lado del WhatsApp está Oniris o alguien de la familia. Te ayudamos con tallas, colores, regalos y
+            pijamas para combinar, sin apuro.
+          </p>
+          <p data-reveal>
+            Cada cosa que ves aquí la escogió ella pensando en una sola pregunta: ¿esto ayuda a dormir mejor?
+          </p>
+          <a className="btn btn--gold" href={hello} target="_blank" rel="noopener" data-reveal>
+            Escribirle a Oniris
           </a>
         </div>
-        <div className="cta__flank cta__flank--right" aria-hidden="true" />
       </section>
+
+      {/* ---------- Preguntas ---------- */}
+      {settings.faq.length ? (
+        <section className="faq" id="preguntas" aria-labelledby="faq-title">
+          <h2 id="faq-title" className="h2 faq__title" data-reveal>
+            Lo que
+            <br />
+            nos preguntan
+          </h2>
+          <div className="faq__list">
+            {settings.faq.map((f, i) => (
+              <details key={f.q} className="faq__item" open={i === 0}>
+                <summary>
+                  <span>{f.q}</span>
+                  <span className="faq__icon" aria-hidden="true" />
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </SiteShell>
   );
 }

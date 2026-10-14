@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductView } from "@/components/ProductView";
-import { plateFor } from "@/components/Art";
-import { ProductVisual } from "@/components/ProductVisual";
+import { Tile } from "@/components/Tile";
 import { SiteShell } from "@/components/SiteShell";
 import { getCatalog } from "@/lib/catalog";
 import { money } from "@/lib/format";
@@ -43,37 +42,29 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <SiteShell settings={settings} solidNav>
-      <div className="chapter chapter--plum product-page">
+      <div className="product-page">
         <nav className="crumbs" aria-label="Migas">
-          <Link href="/#catalogo">Catálogo</Link>
+          <Link href="/#catalogo">Colección</Link>
           {categoryName ? (
             <>
               <span aria-hidden="true">/</span>
               <span>{categoryName}</span>
             </>
           ) : null}
-          <span aria-hidden="true">/</span>
-          <span aria-current="page">{product.name}</span>
         </nav>
         <ProductView product={product} settings={settings} />
       </div>
       {related.length ? (
-        <section className="chapter chapter--cream related" aria-labelledby="related-title">
+        <section className="related" aria-labelledby="related-title">
           <h2 id="related-title" className="h2" data-reveal>
             Para acompañar
             <br />
-            <span className="soft">tu noche</span>
+            tu noche
           </h2>
-          <ul className="related__list">
-            {related.map((p) => (
-              <li key={p.id} data-reveal>
-                <Link href={`/producto/${p.slug}`} className="related__item">
-                  <span className="related__visual" style={{ "--plate": plateFor(p.colors[0]?.hex) } as React.CSSProperties}>
-                    <ProductVisual product={p} sizes="(max-width: 760px) 100vw, 30vw" />
-                  </span>
-                  <span className="related__name">{p.name}</span>
-                  <span className="related__price">{money(p.price, settings.currency)}</span>
-                </Link>
+          <ul className="grid grid--three">
+            {related.map((p, i) => (
+              <li key={p.id} style={{ "--i": i } as React.CSSProperties}>
+                <Tile product={p} settings={settings} />
               </li>
             ))}
           </ul>

@@ -1,77 +1,70 @@
 import Link from "next/link";
 import { whatsappLink } from "@/lib/format";
+import { DAWN_A, DAWN_B } from "@/lib/palette";
 import type { Settings } from "@/lib/types";
-
-const BLOCK_COLORS = ["#0A0A33", "#38125C", "#A11370", "#F95C42", "#38125C", "#0A0A33", "#A11370", "#F95C42"];
-const BLOCK_HEIGHTS = [100, 78, 64, 88, 72, 96, 68, 84];
+import { Mark } from "./Art";
+import { Lamellae } from "./Lamellae";
 
 export function Footer({ settings }: { settings: Settings }) {
-  const letters = settings.storeName.split("");
   const year = new Date().getFullYear();
+  const hello = whatsappLink(settings, `¡Hola ${settings.storeName}!`);
   return (
     <footer className="footer" id="pie">
-      <div className="footer__mark" aria-label={settings.storeName} role="img">
-        {letters.map((l, i) => (
-          <span
-            key={i}
-            className="footer__block"
-            data-reveal
-            style={
-              {
-                background: BLOCK_COLORS[i % BLOCK_COLORS.length],
-                height: `${BLOCK_HEIGHTS[i % BLOCK_HEIGHTS.length]}%`,
-                "--i": i,
-              } as React.CSSProperties
-            }
-            aria-hidden="true"
-          >
-            {l}
-          </span>
-        ))}
+      <div className="close">
+        <div className="close__text">
+          <h2 className="h2" data-reveal>
+            Hablemos de
+            <br />
+            tu noche
+          </h2>
+          <p data-reveal>
+            Escríbenos y te ayudamos a escoger pijama, talla o un regalo para alguien que duerme poco.
+          </p>
+          <div className="close__actions" data-reveal>
+            <a className="btn btn--gold" href={hello} target="_blank" rel="noopener">
+              Abrir WhatsApp
+            </a>
+            {settings.instagram ? (
+              <a className="btn btn--ghost" href={settings.instagram} target="_blank" rel="noopener">
+                Instagram
+              </a>
+            ) : null}
+            {settings.tiktok ? (
+              <a className="btn btn--ghost" href={settings.tiktok} target="_blank" rel="noopener">
+                TikTok
+              </a>
+            ) : null}
+          </div>
+        </div>
+        <div className="close__field">
+          <Lamellae
+            className="close__canvas"
+            faceA={DAWN_A}
+            faceB={DAWN_B}
+            lines={settings.storeName === "OniStore" ? ["Oni", "Store"] : [settings.storeName]}
+            dim={0.9}
+            slat={10}
+            interactive
+          />
+        </div>
       </div>
 
-      <div className="footer__grid">
-        <div className="footer__col">
-          <p className="footer__head">Tienda</p>
-          <Link href="/#catalogo">Catálogo</Link>
-          <Link href="/#destacado">La favorita</Link>
-          <Link href="/#suenometro">Calculadora de sueño</Link>
-        </div>
-        <div className="footer__col">
-          <p className="footer__head">Ayuda</p>
+      <div className="footer__base">
+        <Link href="/" className="footer__brand" aria-label={`${settings.storeName}, inicio`}>
+          <Mark size={30} />
+          <span className="wordmark">{settings.storeName}</span>
+        </Link>
+        <nav className="footer__links" aria-label="Pie de página">
+          <Link href="/#catalogo">Colección</Link>
+          <Link href="/#suenometro">Tu noche en ciclos</Link>
           <Link href="/#como-pedir">Cómo pedir</Link>
+          <Link href="/#nosotros">Oniris</Link>
           <Link href="/#preguntas">Preguntas</Link>
-          <Link href="/#nosotros">Quiénes somos</Link>
-        </div>
-        <div className="footer__col">
-          <p className="footer__head">Síguenos</p>
-          {settings.instagram ? (
-            <a href={settings.instagram} target="_blank" rel="noopener">
-              Instagram
-            </a>
-          ) : null}
-          {settings.tiktok ? (
-            <a href={settings.tiktok} target="_blank" rel="noopener">
-              TikTok
-            </a>
-          ) : null}
-          <a href={whatsappLink(settings, `¡Hola ${settings.storeName}!`)} target="_blank" rel="noopener">
-            WhatsApp
-          </a>
-        </div>
-        <div className="footer__contact">
-          <p>{settings.delivery}</p>
-          <p>Pedidos y dudas, siempre por WhatsApp.</p>
-        </div>
-      </div>
-
-      <div className="footer__last">
-        <p>
-          © {year} {settings.storeName}. Hecho con cariño para que duermas bonito.
+        </nav>
+        <p className="footer__note">{settings.delivery}</p>
+        <p className="footer__copy">
+          © {year} {settings.storeName}. Para dormir bonito.
         </p>
-        <a className="btn btn--dark btn--small" href="#contenido">
-          Volver arriba
-        </a>
       </div>
     </footer>
   );

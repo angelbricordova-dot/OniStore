@@ -35,6 +35,13 @@ export function plateFor(hex?: string) {
   return isLight(hex) ? "#4A1F73" : "#FFD6C4";
 }
 
+/** Colores del barrido de láminas detrás de un producto de ese color. */
+export function plateSweep(hex?: string) {
+  const c = hex ?? palette.magenta;
+  if (isLight(c)) return [palette.plum, mix(c, palette.night, 0.55), palette.magenta, "#15144A"];
+  return [palette.gold, palette.peach, mix(c, "#ffffff", 0.62), palette.peach, palette.coral];
+}
+
 /** Acento que contrasta con el color principal del producto. */
 export function accentFor(hex: string) {
   if (isLight(hex)) return hex.toLowerCase() === palette.gold.toLowerCase() ? palette.magenta : palette.plum;
@@ -158,38 +165,67 @@ function Svg({ children, className, label }: { children: React.ReactNode; classN
 export function PajamaArt({ color = palette.plum, className, label }: ArtProps) {
   const id = useId().replace(/:/g, "");
   const accent = accentFor(color);
-  const shade = mix(color, palette.night, 0.22);
-  const shirt = "M128 92 L168 74 Q200 96 232 74 L272 92 L278 252 Q200 266 122 252 Z";
-  const sleeveL = "M128 92 L74 196 L106 214 L146 146 Z";
-  const sleeveR = "M272 92 L326 196 L294 214 L254 146 Z";
-  const pants = "M138 236 L262 236 L284 372 L216 372 L200 290 L184 372 L116 372 Z";
+  const shade = mix(color, palette.night, 0.28);
+  const deep = mix(color, palette.night, 0.45);
+  const light = mix(color, "#ffffff", 0.18);
+  const shirt = "M130 94 L170 76 Q200 98 230 76 L270 94 L276 246 Q238 258 200 254 Q162 258 124 246 Z";
+  const sleeveL = "M130 94 Q96 132 72 196 L106 214 Q124 172 146 146 Z";
+  const sleeveR = "M270 94 Q304 132 328 196 L294 214 Q276 172 254 146 Z";
+  const pants = "M140 244 L260 244 L278 372 Q247 379 216 372 L200 292 L184 372 Q153 379 122 372 Z";
+  const lapelL = "M170 76 L200 134 L152 116 Q158 92 170 76 Z";
+  const lapelR = "M230 76 L200 134 L248 116 Q242 92 230 76 Z";
   return (
     <Svg className={className} label={label}>
       <defs>
         <pattern id={`p${id}`} width="46" height="46" patternUnits="userSpaceOnUse">
-          <path d={crescent(12, 12, 5)} fill={accent} opacity="0.7" />
-          <path d={sparkle(34, 34, 4)} fill={accent} opacity="0.7" />
+          <path d={crescent(12, 12, 5)} fill={accent} opacity="0.42" />
+          <path d={sparkle(34, 34, 4)} fill={accent} opacity="0.42" />
         </pattern>
+        <linearGradient id={`s${id}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity="0" />
+          <stop offset="0.32" stopColor="#fff" stopOpacity="0.26" />
+          <stop offset="0.46" stopColor="#fff" stopOpacity="0" />
+          <stop offset="0.66" stopColor="#fff" stopOpacity="0.1" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
       </defs>
+      {/* pantalón */}
       <path d={pants} fill={shade} />
       <path d={pants} fill={`url(#p${id})`} />
-      <path d="M117.5 360 L185.6 360 L184 372 L116 372 Z" fill={accent} />
-      <path d="M214.4 360 L282.5 360 L284 372 L216 372 Z" fill={accent} />
+      <path d={pants} fill={`url(#s${id})`} />
+      <rect x="140" y="236" width="120" height="16" rx="5" fill={deep} />
+      <path d="M196 248 Q190 262 186 270 M204 248 Q210 262 214 270" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M166 300 Q160 332 164 362 M234 300 Q240 332 236 362" fill="none" stroke={deep} strokeWidth="2" opacity="0.6" strokeLinecap="round" />
+      <path d="M121 364 Q153 371 185 364 L184 372 Q153 379 122 372 Z" fill={accent} />
+      <path d="M215 364 Q247 371 279 364 L278 372 Q247 379 216 372 Z" fill={accent} />
+      {/* mangas */}
       <path d={sleeveL} fill={color} />
       <path d={sleeveR} fill={color} />
       <path d={sleeveL} fill={`url(#p${id})`} />
       <path d={sleeveR} fill={`url(#p${id})`} />
-      <path d="M80 184 L112 202 L106 214 L74 196 Z" fill={accent} />
-      <path d="M320 184 L288 202 L294 214 L326 196 Z" fill={accent} />
+      <path d={sleeveL} fill={`url(#s${id})`} />
+      <path d={sleeveR} fill={`url(#s${id})`} />
+      <path d="M78 184 L111 202 L106 214 L72 196 Z" fill={accent} />
+      <path d="M322 184 L289 202 L294 214 L328 196 Z" fill={accent} />
+      <path d="M104 150 Q114 166 110 184 M296 150 Q286 166 290 184" fill="none" stroke={shade} strokeWidth="2" opacity="0.7" strokeLinecap="round" />
+      {/* camisa */}
       <path d={shirt} fill={color} />
       <path d={shirt} fill={`url(#p${id})`} />
-      <path d="M168 74 L200 132 L154 114 Z" fill={accent} />
-      <path d="M232 74 L200 132 L246 114 Z" fill={accent} />
-      <path d="M200 132 L200 258" stroke={shade} strokeWidth="3" />
-      {[152, 180, 208, 236].map((y) => (
-        <circle key={y} cx="206" cy={y} r="5" fill={accent} />
+      <path d={shirt} fill={`url(#s${id})`} />
+      <path d="M150 196 Q160 220 154 242 M250 182 Q242 208 248 234" fill="none" stroke={shade} strokeWidth="2" opacity="0.6" strokeLinecap="round" />
+      <path d="M124 246 Q162 258 200 254 Q238 258 276 246" fill="none" stroke={accent} strokeWidth="3.5" strokeLinecap="round" />
+      <path d={lapelL} fill={light} stroke={accent} strokeWidth="3.5" strokeLinejoin="round" />
+      <path d={lapelR} fill={light} stroke={accent} strokeWidth="3.5" strokeLinejoin="round" />
+      <path d="M200 134 L200 254" stroke={shade} strokeWidth="2.5" />
+      <path d="M212 134 L212 252" stroke={accent} strokeWidth="2" opacity="0.8" />
+      {[156, 182, 208, 234].map((y) => (
+        <g key={y}>
+          <circle cx="206" cy={y} r="5.5" fill={accent} />
+          <circle cx="204.5" cy={y - 1.5} r="1.6" fill="#fff" opacity="0.55" />
+        </g>
       ))}
-      <rect x="146" y="148" width="32" height="28" rx="3" fill="none" stroke={accent} strokeWidth="3.5" />
+      <path d="M146 150 L178 150 L178 176 Q162 182 146 176 Z" fill={light} />
+      <path d="M146 150 L178 150" stroke={accent} strokeWidth="4" strokeLinecap="round" />
     </Svg>
   );
 }

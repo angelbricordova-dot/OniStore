@@ -24,27 +24,32 @@ function useNightClock() {
   return time;
 }
 
-export function Nav({ solid = false, storeName }: { solid?: boolean; storeName: string }) {
-  const [scrolled, setScrolled] = useState(solid);
+export function Nav({ storeName }: { solid?: boolean; storeName: string }) {
   const time = useNightClock();
+  const [hidden, setHidden] = useState(false);
 
+  // Se esconde al bajar y vuelve al subir: más piso a la vista en el teléfono.
   useEffect(() => {
-    if (solid) return;
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.82);
-    onScroll();
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 6) return;
+      setHidden(y > lastY && y > 240);
+      lastY = y;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [solid]);
+  }, []);
 
   return (
-    <header className="nav" data-solid={scrolled || solid}>
+    <header className="nav" data-hidden={hidden}>
       <Link href="/" className="nav__brand" aria-label={`${storeName}, inicio`}>
-        <Mark size={34} />
+        <Mark size={30} />
         <span className="wordmark">{storeName}</span>
       </Link>
       <nav className="nav__links" aria-label="Principal">
-        <Link href="/#catalogo">Catálogo</Link>
-        <Link href="/#suenometro">Calculadora de sueño</Link>
+        <Link href="/#catalogo">Colección</Link>
+        <Link href="/#suenometro">Tu noche</Link>
         <Link href="/#preguntas">Preguntas</Link>
       </nav>
       <div className="nav__end">
