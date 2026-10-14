@@ -4,13 +4,11 @@ import { Mark } from "@/components/Art";
 export default function NotFound() {
   return (
     <main className="lost">
-      <Mark size={120} />
-      <h1 className="h2">Esta página
-        <br />
-        se quedó dormida</h1>
-      <p>No encontramos lo que buscabas. Quizás ya no está en el catálogo.</p>
-      <Link className="btn btn--gold" href="/#catalogo">
-        Volver al catálogo
+      <Mark size={88} />
+      <h1 className="title">Esta página se quedó dormida.</h1>
+      <p>No encontramos lo que buscabas. Quizás ya no está en la colección.</p>
+      <Link className="btn btn--primary" href="/#coleccion">
+        Volver a la colección
       </Link>
     </main>
   );

@@ -35,6 +35,14 @@ export function plateFor(hex?: string) {
   return isLight(hex) ? "#4A1F73" : "#FFD6C4";
 }
 
+/** Fondos de estudio para un producto de ese color: uno para paletas claras y otro para la oscura. */
+export function plateTints(hex?: string) {
+  const c = hex ?? palette.plum;
+  const light = isLight(c) ? mix(c, palette.plum, 0.16) : mix(c, "#ffffff", 0.86);
+  const dark = isLight(c) ? mix(c, palette.night, 0.72) : mix(c, palette.night, 0.55);
+  return { "--plate-l": light, "--plate-d": dark } as React.CSSProperties;
+}
+
 /** Colores del barrido de láminas detrás de un producto de ese color. */
 export function plateSweep(hex?: string) {
   const c = hex ?? palette.magenta;

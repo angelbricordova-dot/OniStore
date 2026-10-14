@@ -9,6 +9,7 @@ export const seedCatalog: Catalog = {
   updatedAt: "2026-10-13T00:00:00.000Z",
   settings: {
     storeName: "OniStore",
+    theme: "luna",
     whatsapp: "",
     instagram: "https://instagram.com/onistore",
     tiktok: "https://tiktok.com/@onistore",

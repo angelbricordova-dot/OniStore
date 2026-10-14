@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { del, get, list, put } from "@vercel/blob";
 import { seedCatalog } from "./seed";
-import type { Catalog, Category, Product, Settings } from "./types";
+import { THEMES, type Catalog, type Category, type Product, type Settings } from "./types";
 
 /**
  * Dónde vive el catálogo:
@@ -190,6 +190,7 @@ export function normalizeCatalog(raw: unknown): Catalog {
 
   const settings: Settings = {
     storeName: str(s.storeName, seed.storeName) || seed.storeName,
+    theme: THEMES.some((t) => t.id === s.theme) ? (s.theme as Settings["theme"]) : "luna",
     whatsapp: str(s.whatsapp).replace(/\D/g, ""),
     instagram: str(s.instagram),
     tiktok: str(s.tiktok),

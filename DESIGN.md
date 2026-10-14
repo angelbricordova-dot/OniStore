@@ -1,190 +1,174 @@
 ---
 name: OniStore
-description: Pijamas y rituales para dormir bonito, sobre un piso de cromointerferencia.
+description: Pijamas y rituales para dormir bonito, con la calma de una página de producto de Apple.
 colors:
-  medianoche: "#0A0A33"
-  medianoche-2: "#15144A"
-  medianoche-3: "#1F1D5C"
-  ciruela: "#38125C"
-  ciruela-2: "#4A1F73"
-  magenta: "#A11370"
-  coral: "#F95C42"
-  dorado: "#FFBF42"
-  dorado-claro: "#FFCF6E"
-  durazno: "#FFA385"
-  crema: "#F7ECE1"
+  luna-bg: "#FFFFFF"
+  luna-bg-alt: "#F5F5F7"
+  luna-ink: "#1D1D1F"
+  luna-ink-2: "#6E6E73"
+  luna-accent: "#A11370"
+  lavanda-bg: "#FBFAFD"
+  lavanda-bg-alt: "#F2EEF8"
+  lavanda-ink: "#1B1530"
+  lavanda-accent: "#38125C"
+  durazno-bg: "#FFFCFA"
+  durazno-bg-alt: "#FFF2EB"
+  durazno-ink: "#2B1A14"
+  durazno-accent: "#C93A26"
+  noche-bg: "#07071C"
+  noche-bg-alt: "#111130"
+  noche-surface: "#17173D"
+  noche-ink: "#F5F5F7"
+  noche-accent: "#FFBF42"
 typography:
-  display:
-    fontFamily: "Anybody, Arial Narrow, sans-serif"
-    fontSize: "clamp(52px, 7.6vw, 96px)"
-    fontWeight: 900
-    lineHeight: 0.9
-    letterSpacing: "-0.03em"
-    fontVariation: "'wdth' 125"
-  headline:
-    fontFamily: "Anybody, Arial Narrow, sans-serif"
-    fontSize: "clamp(38px, 5.4vw, 84px)"
-    fontWeight: 800
-    lineHeight: 0.94
-    letterSpacing: "-0.025em"
-    fontVariation: "'wdth' 112"
-  title:
-    fontFamily: "Anybody, Arial Narrow, sans-serif"
-    fontSize: "clamp(22px, 1.9vw, 28px)"
+  hero:
+    fontFamily: "-apple-system, SF Pro Display, Inter, system-ui, sans-serif"
+    fontSize: "clamp(48px, 8vw, 96px)"
     fontWeight: 700
-    lineHeight: 1.15
+    lineHeight: 1.02
+    letterSpacing: "-0.035em"
+  title:
+    fontFamily: "-apple-system, SF Pro Display, Inter, system-ui, sans-serif"
+    fontSize: "clamp(34px, 5vw, 56px)"
+    fontWeight: 700
+    lineHeight: 1.07
+    letterSpacing: "-0.028em"
+  lede:
+    fontFamily: "-apple-system, SF Pro Text, Inter, system-ui, sans-serif"
+    fontSize: "clamp(19px, 1.7vw, 24px)"
+    fontWeight: 400
+    lineHeight: 1.38
   body:
-    fontFamily: "Figtree, system-ui, sans-serif"
+    fontFamily: "-apple-system, SF Pro Text, Inter, system-ui, sans-serif"
     fontSize: "17px"
     fontWeight: 400
-    lineHeight: 1.6
-  lead:
-    fontFamily: "Figtree, system-ui, sans-serif"
-    fontSize: "clamp(19px, 1.45vw, 22px)"
+    lineHeight: 1.47
+    letterSpacing: "-0.011em"
+  caption:
+    fontFamily: "-apple-system, SF Pro Text, Inter, system-ui, sans-serif"
+    fontSize: "14px"
     fontWeight: 400
-    lineHeight: 1.45
-  label:
-    fontFamily: "Figtree, system-ui, sans-serif"
-    fontSize: "15px"
-    fontWeight: 700
-    lineHeight: 1.2
+    lineHeight: 1.4
 rounded:
-  none: "0px"
+  sm: "14px"
+  md: "20px"
+  lg: "28px"
   pill: "999px"
 spacing:
-  gap: "clamp(10px, 1vw, 14px)"
-  margin: "clamp(16px, 3vw, 44px)"
-  section: "clamp(88px, 11vw, 168px)"
+  gutter: "clamp(20px, 4vw, 32px)"
+  section: "clamp(84px, 10vw, 140px)"
+  container: "1080px"
 components:
   button-primary:
-    backgroundColor: "{colors.dorado}"
-    textColor: "{colors.medianoche}"
+    backgroundColor: "{colors.luna-accent}"
+    textColor: "#FFFFFF"
     rounded: "{rounded.pill}"
-    padding: "14px 24px"
-    height: "52px"
-  button-primary-hover:
-    backgroundColor: "{colors.dorado-claro}"
-  button-ghost:
-    backgroundColor: "rgba(247, 236, 225, 0.12)"
-    textColor: "{colors.crema}"
+    padding: "12px 24px"
+    height: "48px"
+  button-secondary:
+    backgroundColor: "transparent"
+    textColor: "{colors.luna-accent}"
     rounded: "{rounded.pill}"
-    padding: "14px 24px"
-    height: "52px"
+    padding: "12px 24px"
+    height: "48px"
   size-option:
-    backgroundColor: "rgba(247, 236, 225, 0.12)"
-    textColor: "{colors.crema}"
+    backgroundColor: "{colors.luna-bg}"
+    textColor: "{colors.luna-ink}"
+    rounded: "{rounded.sm}"
+    height: "52px"
+  category-chip-selected:
+    backgroundColor: "{colors.luna-ink}"
+    textColor: "{colors.luna-bg}"
     rounded: "{rounded.pill}"
-    height: "46px"
-  size-option-selected:
-    backgroundColor: "{colors.dorado}"
-    textColor: "{colors.medianoche}"
-  tab-selected:
-    backgroundColor: "{colors.crema}"
-    textColor: "{colors.medianoche}"
-    rounded: "{rounded.pill}"
-  faq-item:
-    backgroundColor: "{colors.medianoche-2}"
-    textColor: "{colors.crema}"
-    rounded: "{rounded.none}"
-  faq-item-open:
-    backgroundColor: "{colors.ciruela}"
 ---
 
 # Design System: OniStore
 
 ## Overview
 
-**Creative North Star: "El piso de la noche"**
+**Creative North Star: "La vitrina tranquila"**
 
-OniStore se construye sobre un piso de cromointerferencia, en la tradición del arte cinético venezolano: láminas verticales de dos caras, con una línea fina en el filo, que mezclan en el ojo los colores de la marca y producen el atardecer sin pintarlo. Cuando el visitante mueve el dedo, el mouse o el teléfono, las láminas giran y el piso pasa de la tarde a la noche. Todo lo demás (letras, productos, botones) se para sobre ese piso o se recorta de él.
+OniStore se presenta como una página de producto de Apple: mucho aire, una sola idea por pantalla, tipografía protagonista y el producto grande sobre un fondo de estudio del mismo tono de la prenda. Nada compite con la pijama. El movimiento es sutil y siempre responde a algo: entradas suaves al hacer scroll, un fundido cuando cambia el color, una leve presión en los botones.
 
-La página es de noche porque así se usa: alguien acostado, con el teléfono en la mano, entrando desde Instagram. El fondo es Medianoche a plena fuerza y el color vive en campos de láminas, nunca como acentos sueltos sobre un fondo neutro. La densidad es de tienda: los productos se ven grandes, y entre capítulos el piso aparece como una franja de ancho completo.
+La marca vive en el acento y en los tintes de cada producto, no en adornos. Hay cuatro paletas salidas de los colores de la marca; la dueña elige una en /admin.
 
 **Key Characteristics:**
-- Fondo Medianoche; el color vive en campos de láminas, no en manchas.
-- Títulos en Anybody, una grotesca de ancho variable que se estira con el movimiento.
-- Texto recortado del piso en los momentos grandes (héroe y cierre).
-- Campos y fichas de esquina recta; los controles siempre redondos.
-- Las entradas se abren como láminas que giran.
+- Fondos lisos, mucho espacio y una sola acción principal por sección.
+- Letra del sistema (SF Pro en Apple, Inter en el resto), con interletrado negativo en tamaños grandes.
+- Cada producto sobre un fondo de estudio teñido con su propio color.
+- Un solo color de acento por paleta, para botones y enlaces.
+- Movimiento sutil, sin bucles ni efectos de fondo.
 
 ## Colors
 
-Una noche completa en siete colores: del dorado del atardecer a la medianoche y de vuelta al amanecer.
+Cuatro paletas, cada una con fondo, fondo alterno, tinta, tinta secundaria y un acento.
 
 ### Primary
-- **Dorado del atardecer** (#FFBF42): la acción. Botones principales, la hora recomendada en el planificador, el anillo del color elegido, la talla seleccionada.
-
-### Secondary
-- **Coral** (#F95C42) y **Magenta** (#A11370): el corazón del piso de láminas, los estados ("Quedan pocas" en coral) y el cierre del atardecer.
-
-### Tertiary
-- **Durazno** (#FFA385) y **Ciruela** (#38125C, #4A1F73): las caras claras y oscuras de las láminas, las placas detrás de los productos, el ítem abierto de las preguntas.
+- **Acento de la paleta**: magenta #A11370 (Luna), ciruela #38125C (Lavanda), coral profundo #C93A26 (Durazno), dorado #FFBF42 (Noche). Solo para botones, enlaces y el estado elegido.
 
 ### Neutral
-- **Medianoche** (#0A0A33): el fondo de todo.
-- **Medianoche 2 y 3** (#15144A, #1F1D5C): superficies un paso arriba (bolsa, preguntas, controles).
-- **Crema** (#F7ECE1): todo el texto; al 76 % para el texto secundario, al 12 % para fondos de controles.
+- **Fondo** (#FFFFFF, #FBFAFD, #FFFCFA, #07071C) y **fondo alterno** (#F5F5F7, #F2EEF8, #FFF2EB, #111130): las secciones y las tarjetas se separan por este paso de tono, no por líneas.
+- **Tinta** (#1D1D1F y equivalentes) y **tinta secundaria** (#6E6E73 y equivalentes): todo el texto; el gris solo para lo secundario.
 
 ### Named Rules
-**The Floor Carries The Colour Rule.** Los siete colores aparecen juntos solo en el piso de láminas. Fuera del piso, un elemento usa un color con un trabajo concreto: dorado para actuar, coral para avisar, crema para leer.
+**The One Accent Rule.** Cada paleta tiene un solo acento y se usa solo para lo que se toca. Nunca como fondo de sección.
 
-**The Night Ground Rule.** El fondo es siempre Medianoche. No hay fondos crema ni claros en las páginas de la tienda.
+**The Product Tint Rule.** El color de un fondo de producto sale de la prenda: un tinte muy claro de su color en las paletas claras, una versión profunda en Noche.
 
 ## Typography
 
-**Display Font:** Anybody (con Arial Narrow)
-**Body Font:** Figtree (con system-ui)
+**Display Font:** SF Pro Display en iPhone y Mac, Inter en el resto.
+**Body Font:** SF Pro Text en iPhone y Mac, Inter en el resto.
 
-**Character:** Anybody es una grotesca de ancho variable (50–150): ancha y pesada en títulos y logotipo, condensada cuando se recorta del piso. Figtree se encarga de todo lo que se lee y de los controles.
+**Character:** neutra y precisa; la jerarquía sale del tamaño y el peso, no de cambiar de letra.
 
 ### Hierarchy
-- **Display** (900, clamp(52px, 7.6vw, 96px), 0.9, ancho 125): la hora recomendada del planificador. Los títulos recortados del piso se dibujan en el canvas con ancho condensado y llenan su campo.
-- **Headline** (800, clamp(38px, 5.4vw, 84px), 0.94, ancho 112): títulos de sección y nombre del producto en su ficha.
-- **Title** (700, clamp(22px, 1.9vw, 28px), 1.15): preguntas frecuentes, nombres en las fichas de la colección, precios.
-- **Body** (400, 17px, 1.6): descripciones y párrafos, de 45 a 60 caracteres por línea.
-- **Lead** (400, clamp(19px, 1.45vw, 22px), 1.45): la frase de apoyo del héroe y del cierre.
-- **Label** (700, 15px): botones, pestañas y leyendas de color y talla.
+- **Hero** (700, clamp(48px, 8vw, 96px), 1.02): una sola vez, en la primera pantalla.
+- **Title** (700, clamp(34px, 5vw, 56px), 1.07): títulos de sección, terminados en punto.
+- **Lede** (400, clamp(19px, 1.7vw, 24px), 1.38): la frase debajo de cada título, en tinta secundaria.
+- **Body** (400, 17px, 1.47): descripciones y respuestas.
+- **Caption** (400, 12–14px): notas, pie de página, etiquetas.
 
 ### Named Rules
-**The Kinetic Width Rule.** El ancho de Anybody es parte del movimiento: las palabras de "Cómo pedir" llegan condensadas (62 %) y se abren a 100 %. No se usa ancho variable como adorno en el texto de lectura.
+**The Tight Display Rule.** El interletrado es negativo en los tamaños grandes (-0.035em en el héroe, -0.028em en títulos) y casi cero en el texto de lectura.
 
 ## Layout
 
-Cuadrícula de 12 columnas con márgenes de clamp(16px, 3vw, 44px) y separación de clamp(10px, 1vw, 14px). Los capítulos se separan con clamp(88px, 11vw, 168px) o con una franja de piso de ancho completo (90–170px, o hasta 320px en la versión alta). El héroe divide 7/5: el piso con el título a la izquierda, el producto de la noche a la derecha. La colección usa 4 columnas, con la primera ficha a 2×2; baja a 3 en tableta y a 2 en teléfono. Por debajo de 860px todo pasa a una columna, y en el héroe la placa del producto se reduce a 104px junto a su nombre, para que el botón de añadir entre en la primera pantalla.
+Contenedor de 1080px centrado, con márgenes laterales de clamp(20px, 4vw, 32px) y secciones separadas por clamp(84px, 10vw, 140px). Los títulos van centrados con su frase debajo. Las categorías son mosaicos de 2 columnas (1 en teléfono) y la colección es una cuadrícula de 3 columnas (2 en teléfono). Por debajo de 760px la navegación se reduce a logo y bolsa.
 
 ## Elevation & Depth
 
-Plano. La profundidad la dan los pasos de tono (Medianoche → Medianoche 2 → Medianoche 3 → Ciruela) y la vibración del piso de láminas. La única sombra es la del panel de la bolsa, porque flota sobre la página.
+Plano. La profundidad la dan el paso de tono entre fondo y fondo alterno, y una sombra suave proyectada solo por los dibujos de producto. La barra de navegación es translúcida (desenfoque de 20px) y muestra una línea fina solo cuando hay contenido debajo.
 
 ### Shadow Vocabulary
-- **Panel flotante** (`box-shadow: -24px 0 60px rgba(0,0,0,0.45)`): solo el cajón de la bolsa.
+- **Producto** (`drop-shadow(0 18px 24px rgba(20,10,40,0.18))`): bajo cada dibujo de producto.
+- **Cajón de la bolsa** (`box-shadow: -20px 0 50px rgba(0,0,0,0.18)`): solo el panel que flota.
 
 ## Shapes
 
-Campos, placas, fichas y paneles de preguntas tienen la esquina recta: son pedazos del piso. Todos los controles son píldoras (999px): botones, pestañas, tallas, chips de hora y etiquetas de estado. Las muestras de color son círculos de 44px con un anillo dorado de 3px separado 3px cuando están elegidas.
+Esquinas redondeadas y generosas: 28px en mosaicos y fondos de producto grandes, 20px en tarjetas, 14px en opciones de talla y campos. Botones, chips y etiquetas son píldoras. Las muestras de color son círculos con un anillo del color de acento separado 3px cuando están elegidas.
 
 ## Components
 
-- **Piso de láminas (canvas):** láminas verticales de 8–11px con dos caras de color y una línea crema en el filo. Responden al mouse, al dedo, al scroll y a la inclinación del teléfono; ondulan despacio y se detienen fuera de pantalla o con "reducir movimiento". Puede recortar texto: el resto del campo se oscurece al 86–92 % de Medianoche.
-- **Placa de láminas (CSS):** un barrido de colores con láminas oscuras de 2px cada 12px y una línea crema de 1px. En pantallas con mouse se desplaza 22px al pasar por encima; en pantallas táctiles avanza con el scroll.
-- **Botón principal:** píldora dorada de 52px, texto Medianoche en Figtree 700. Al presionar baja a scale(0.97) en 160ms.
-- **Botón fantasma:** píldora crema al 12 %, texto crema; pasa al 20 % al pasar el mouse por encima.
-- **Selector de producto:** nombre, precio, muestras de color, tallas y dos acciones lado a lado. Al cambiar el color se reacomoda la paleta del piso.
-- **Pregunta frecuente:** `<details>` en Medianoche 2 que pasa a Ciruela al abrirse, con un signo más dibujado en CSS que se convierte en menos.
-- **Planificador de la noche:** una barra de seis ciclos hecha de placas de láminas (de la noche al dorado), con marcas en píldora para cada hora posible.
+- **Botón principal:** píldora de 48px en el color de acento, texto 17px peso 500. Se oscurece al pasar el mouse y baja a scale(0.97) al presionar.
+- **Botón secundario:** píldora con borde de 1.5px en el acento.
+- **Enlace con flecha:** texto en el acento con una flecha que avanza 3px al pasar el mouse.
+- **Fondo de estudio:** el producto centrado sobre su tinte, con un brillo radial suave arriba.
+- **Opción de talla:** caja de 72×52px con borde fino; borde de 2px en el acento cuando está elegida.
+- **Chips de categoría:** píldoras en el fondo alterno; la elegida se invierte (tinta de fondo, texto claro).
+- **Pregunta frecuente:** filas separadas por líneas finas con un signo más que gira 45° al abrir.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** poner el color en campos de láminas que ocupen regiones enteras.
-- **Do** recortar los títulos grandes del piso en el héroe y en el cierre.
-- **Do** dar a cada acción el dorado, y a nada más.
-- **Do** dejar que el piso responda al visitante y que se detenga fuera de pantalla o con "reducir movimiento".
-- **Do** reemplazar los dibujos de producto por fotos reales en cuanto existan; la placa de láminas queda detrás de la foto recortada.
+- **Do** dejar una idea por pantalla y mucho espacio alrededor.
+- **Do** mostrar cada producto grande, sobre el tinte de su propio color.
+- **Do** usar el acento solo en lo que se toca.
+- **Do** mantener el movimiento sutil, y siempre como respuesta a algo.
+- **Do** cambiar de paleta solo desde /admin, sin tocar el código.
 
 ### Don't:
-- **Don't** usar fondos crema ni claros en las páginas de la tienda.
-- **Don't** usar degradados suaves como fondo de sección; el color se mezcla en las láminas.
+- **Don't** volver a efectos de fondo animados, rayas o texturas: el estilo cinético se probó y se descartó.
+- **Don't** usar más de un color de acento a la vez.
 - **Don't** poner etiquetas pequeñas encima de los títulos.
-- **Don't** redondear campos, placas o fichas; solo los controles son redondos.
 - **Don't** inventar testimonios, cifras ni procesos que la tienda no haya confirmado.

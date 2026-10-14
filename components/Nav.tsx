@@ -2,61 +2,38 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BagButton } from "./Bag";
+import { useBag } from "./Bag";
 import { Mark } from "./Art";
+import { BagIcon } from "./Icons";
 
-/** La página es una noche: el reloj avanza de 19:30 a 06:30 mientras bajas. */
-function useNightClock() {
-  const [time, setTime] = useState("19:30");
+export function Nav({ storeName }: { storeName: string }) {
+  const [scrolled, setScrolled] = useState(false);
+  const { count, setOpen } = useBag();
+
   useEffect(() => {
-    const update = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-      const minutes = Math.round((19.5 * 60 + p * 11 * 60) / 5) * 5;
-      const h = Math.floor(minutes / 60) % 24;
-      const m = minutes % 60;
-      setTime(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
-  return time;
-}
-
-export function Nav({ storeName }: { solid?: boolean; storeName: string }) {
-  const time = useNightClock();
-  const [hidden, setHidden] = useState(false);
-
-  // Se esconde al bajar y vuelve al subir: más piso a la vista en el teléfono.
-  useEffect(() => {
-    let lastY = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (Math.abs(y - lastY) < 6) return;
-      setHidden(y > lastY && y > 240);
-      lastY = y;
-    };
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <header className="nav" data-hidden={hidden}>
-      <Link href="/" className="nav__brand" aria-label={`${storeName}, inicio`}>
-        <Mark size={30} />
-        <span className="wordmark">{storeName}</span>
-      </Link>
-      <nav className="nav__links" aria-label="Principal">
-        <Link href="/#catalogo">Colección</Link>
-        <Link href="/#suenometro">Tu noche</Link>
-        <Link href="/#preguntas">Preguntas</Link>
-      </nav>
-      <div className="nav__end">
-        <span className="nav__clock" aria-hidden="true" title="La hora de la noche en OniStore">
-          {time}
-        </span>
-        <BagButton className="btn btn--nav" />
+    <header className="nav" data-scrolled={scrolled}>
+      <div className="nav__inner">
+        <Link href="/" className="nav__brand" aria-label={`${storeName}, inicio`}>
+          <Mark size={24} />
+          <span>{storeName}</span>
+        </Link>
+        <nav className="nav__links" aria-label="Principal">
+          <Link href="/#coleccion">Colección</Link>
+          <Link href="/#tu-noche">Tu noche</Link>
+          <Link href="/#como-pedir">Cómo pedir</Link>
+          <Link href="/#preguntas">Preguntas</Link>
+        </nav>
+        <button className="nav__bag" onClick={() => setOpen(true)} aria-label={`Abrir la bolsa, ${count} productos`}>
+          <BagIcon size={20} />
+          {count > 0 ? <span className="nav__count">{count}</span> : null}
+        </button>
       </div>
     </header>
   );

@@ -36,8 +36,19 @@ export type Category = {
 
 export type Faq = { q: string; a: string };
 
+export type Theme = "luna" | "lavanda" | "durazno" | "noche";
+
+export const THEMES: { id: Theme; name: string; hint: string; swatches: string[] }[] = [
+  { id: "luna", name: "Luna", hint: "Blanco limpio con magenta.", swatches: ["#FFFFFF", "#F5F4F7", "#A11370"] },
+  { id: "lavanda", name: "Lavanda", hint: "Lila suave con ciruela.", swatches: ["#FBFAFD", "#F1ECF7", "#38125C"] },
+  { id: "durazno", name: "Durazno", hint: "Blanco cálido con coral.", swatches: ["#FFFCFA", "#FFF1EA", "#C93A26"] },
+  { id: "noche", name: "Noche", hint: "Oscura con dorado.", swatches: ["#07071C", "#15153A", "#FFBF42"] },
+];
+
 export type Settings = {
   storeName: string;
+  /** Paleta de colores de la tienda. */
+  theme: Theme;
   /** Número con código de país, solo dígitos. Ej: 584121234567 */
   whatsapp: string;
   instagram: string;

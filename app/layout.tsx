@@ -1,18 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Anybody, Figtree } from "next/font/google";
-import "lenis/dist/lenis.css";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const display = Anybody({
+// En iPhone y Mac se usa la letra del sistema (SF Pro); Inter la reemplaza en el resto.
+const inter = Inter({
   subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const text = Figtree({
-  subsets: ["latin"],
-  variable: "--font-text",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -33,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0A0A33",
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -41,7 +34,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${display.variable} ${text.variable}`} suppressHydrationWarning>
+    <html lang="es" className={inter.variable} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

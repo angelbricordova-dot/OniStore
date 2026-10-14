@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Category, Product, Settings } from "@/lib/types";
 import { Tile } from "./Tile";
 
@@ -14,55 +14,63 @@ export function Collection({
   settings: Settings;
 }) {
   const tabs = useMemo(
-    () =>
-      [
-        { id: "todo", name: "Todo", blurb: "Todo lo que hay para esta noche.", count: products.length },
-        ...categories.map((c) => ({ ...c, count: products.filter((p) => p.category === c.id).length })),
-      ].filter((t) => t.id === "todo" || t.count > 0 || categories.length <= 4),
+    () => [
+      { id: "todo", name: "Todo", count: products.length },
+      ...categories
+        .map((c) => ({ id: c.id, name: c.name, count: products.filter((p) => p.category === c.id).length }))
+        .filter((t) => t.count > 0),
+    ],
     [products, categories],
   );
   const [active, setActive] = useState("todo");
-  const current = tabs.find((t) => t.id === active) ?? tabs[0];
+
+  // Los mosaicos de categorías enlazan a #coleccion-<categoría>.
+  useEffect(() => {
+    const read = () => {
+      const m = window.location.hash.match(/^#coleccion-(.+)$/);
+      if (m && tabs.some((t) => t.id === m[1])) {
+        setActive(m[1]);
+        document.getElementById("coleccion")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+    read();
+    window.addEventListener("hashchange", read);
+    return () => window.removeEventListener("hashchange", read);
+  }, [tabs]);
+
   const shown = active === "todo" ? products : products.filter((p) => p.category === active);
 
   return (
-    <section className="collection" id="catalogo" aria-labelledby="collection-title">
-      <header className="collection__head">
-        <h2 id="collection-title" className="h2" data-reveal>
-          La colección
+    <section className="collection" id="coleccion" aria-labelledby="collection-title">
+      <div className="section-head">
+        <h2 id="collection-title" className="title" data-reveal>
+          La colección.
         </h2>
-        <p className="collection__blurb" data-reveal aria-live="polite">
-          {current.blurb || "Escoge, toca y pide por WhatsApp."}
+        <p className="lede" data-reveal>
+          Toca cualquier pieza para ver sus colores y tallas.
         </p>
-        <div className="tabs" role="tablist" aria-label="Categorías" data-reveal>
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              role="tab"
-              type="button"
-              aria-selected={t.id === active}
-              aria-controls="collection-grid"
-              className="tab"
-              onClick={() => setActive(t.id)}
-            >
-              {t.name}
-              <span className="tab__count">{t.count}</span>
-            </button>
-          ))}
-        </div>
-      </header>
-
-      {shown.length ? (
-        <ul className="grid" id="collection-grid" role="tabpanel" aria-label={current.name} key={active}>
-          {shown.map((p, i) => (
-            <li key={p.id} className={i === 0 && active === "todo" ? "grid__lead" : undefined} style={{ "--i": i } as React.CSSProperties}>
-              <Tile product={p} settings={settings} lead={i === 0 && active === "todo"} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="collection__empty">Muy pronto llegan productos a esta categoría.</p>
-      )}
+      </div>
+      <div className="segmented" role="tablist" aria-label="Categorías" data-reveal>
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            aria-selected={t.id === active}
+            aria-controls="collection-grid"
+            onClick={() => setActive(t.id)}
+          >
+            {t.name}
+          </button>
+        ))}
+      </div>
+      <ul className="cards" id="collection-grid" role="tabpanel" key={active}>
+        {shown.map((p, i) => (
+          <li key={p.id} style={{ "--i": i } as React.CSSProperties}>
+            <Tile product={p} settings={settings} />
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

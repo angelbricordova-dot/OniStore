@@ -1,33 +1,23 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { Product, Settings } from "@/lib/types";
-import { Lamellae } from "./Lamellae";
-import { ProductPicker, floorFor } from "./ProductPicker";
+import { plateTints } from "./Art";
+import { ProductPicker } from "./ProductPicker";
 import { ProductVisual } from "./ProductVisual";
 
 export function ProductView({ product, settings }: { product: Product; settings: Settings }) {
   const [colorIdx, setColorIdx] = useState(0);
   const [photo, setPhoto] = useState(0);
   const hex = product.colors[colorIdx]?.hex;
-  const floor = useMemo(() => floorFor(hex), [hex]);
-  const hasPhotos = product.images.length > 0;
 
   return (
     <article className="pv">
       <div className="pv__stage">
-        <div className="pv__main" data-photo={hasPhotos || undefined}>
-          {hasPhotos ? null : (
-            <Lamellae className="pv__canvas" faceA={floor.a} faceB={floor.b} slat={10} wave={0.12} interactive />
-          )}
-          <ProductVisual
-            product={product}
-            colorHex={hex}
-            index={photo}
-            priority
-            sizes="(max-width: 900px) 100vw, 55vw"
-            className="pv__visual"
-          />
+        <div className="pv__main plate" style={plateTints(hex)} data-photo={product.images.length > 0 || undefined}>
+          <span className="pv__art" key={`${hex}-${photo}`}>
+            <ProductVisual product={product} colorHex={hex} index={photo} priority sizes="(max-width: 900px) 100vw, 58vw" />
+          </span>
         </div>
         {product.images.length > 1 ? (
           <div className="pv__thumbs" role="tablist" aria-label="Fotos">
@@ -41,7 +31,7 @@ export function ProductView({ product, settings }: { product: Product; settings:
                 className="pv__thumb"
                 onClick={() => setPhoto(i)}
               >
-                <ProductVisual product={product} index={i} sizes="96px" />
+                <ProductVisual product={product} index={i} sizes="80px" />
               </button>
             ))}
           </div>

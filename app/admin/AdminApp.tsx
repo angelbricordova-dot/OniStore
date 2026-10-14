@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Mark, ProductArt, plateFor } from "@/components/Art";
 import { money, statusLabel } from "@/lib/format";
-import type { ArtKind, Catalog, Category, Faq, Product, ProductStatus, Settings } from "@/lib/types";
+import { THEMES, type ArtKind, type Catalog, type Category, type Faq, type Product, type ProductStatus, type Settings } from "@/lib/types";
 import { fetchVersions, logout, publishCatalog, restoreVersion } from "./actions";
 
 type Storage = "blob" | "file" | "readonly";
@@ -768,6 +768,33 @@ function SettingsTab({
 
   return (
     <div className="a-panel">
+      <h2>Paleta de colores</h2>
+      <p className="a-muted">Cambia los colores de toda la tienda. Puedes verla antes de publicar con “Ver tienda”.</p>
+      <div className="a-themes" role="radiogroup" aria-label="Paleta de colores">
+        {THEMES.map((t) => (
+          <div key={t.id} className="a-theme" data-on={settings.theme === t.id}>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={settings.theme === t.id}
+              className="a-theme__pick"
+              onClick={() => setSettings({ theme: t.id })}
+            >
+              <span className="a-theme__chips" aria-hidden="true">
+                {t.swatches.map((c) => (
+                  <span key={c} style={{ background: c }} />
+                ))}
+              </span>
+              <strong>{t.name}</strong>
+              <span className="a-muted">{t.hint}</span>
+            </button>
+            <a className="a-link" href={`/?tema=${t.id}`} target="_blank" rel="noopener">
+              Vista previa
+            </a>
+          </div>
+        ))}
+      </div>
+
       <h2>Contacto y redes</h2>
       <div className="a-grid">
         <Field label="Número de WhatsApp" hint="Con código de país, sin + ni espacios. Ej: 584121234567">

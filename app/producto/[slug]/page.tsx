@@ -41,7 +41,7 @@ export default async function ProductPage({ params }: Props) {
   ].slice(0, 3);
 
   return (
-    <SiteShell settings={settings} solidNav>
+    <SiteShell settings={settings}>
       <div className="product-page">
         <nav className="crumbs" aria-label="Migas">
           <Link href="/#catalogo">Colección</Link>
@@ -56,12 +56,10 @@ export default async function ProductPage({ params }: Props) {
       </div>
       {related.length ? (
         <section className="related" aria-labelledby="related-title">
-          <h2 id="related-title" className="h2" data-reveal>
-            Para acompañar
-            <br />
-            tu noche
+          <h2 id="related-title" className="title" data-reveal>
+            Para acompañar tu noche.
           </h2>
-          <ul className="grid grid--three">
+          <ul className="cards">
             {related.map((p, i) => (
               <li key={p.id} style={{ "--i": i } as React.CSSProperties}>
                 <Tile product={p} settings={settings} />

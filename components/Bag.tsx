@@ -150,7 +150,7 @@ function BagDrawer() {
         {items.length === 0 ? (
           <div className="bag__empty">
             <p>Todavía no hay nada aquí. Elige algo del catálogo y aparecerá en esta bolsa.</p>
-            <a className="btn btn--dark" href="/#catalogo" onClick={() => setOpen(false)}>
+            <a className="btn btn--primary" href="/#coleccion" onClick={() => setOpen(false)}>
               Ver el catálogo
             </a>
           </div>
@@ -200,7 +200,7 @@ function BagDrawer() {
                 Al tocar el botón se abre WhatsApp con tu pedido ya escrito. Te confirmamos disponibilidad, pago y
                 entrega.
               </p>
-              <a className="btn btn--gold btn--block" href={whatsappLink(settings, message)} target="_blank" rel="noopener">
+              <a className="btn btn--primary btn--block" href={whatsappLink(settings, message)} target="_blank" rel="noopener">
                 Enviar pedido por WhatsApp
               </a>
               <button className="link-button bag__clear" onClick={clear}>
@@ -219,7 +219,7 @@ export function AddToBag({
   size,
   color,
   disabled,
-  className = "btn btn--gold",
+  className = "btn btn--primary",
   children = "Añadir a la bolsa",
 }: {
   product: { slug: string; name: string; price: number; art: ArtKind; image?: string; status: ProductStatus };

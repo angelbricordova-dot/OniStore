@@ -42,7 +42,8 @@ The shop is named after its founder, Oniris, and plays on "onírico" (of dreams)
 - Palette (binding, from the owner's palette board): #0A0A33, #38125C, #A11370, #F95C42, #FFBF42, #FFA385, #F7ECE1, used with gradients like the reference logo (warm glow fading into violet and night).
 - The logo is not final; the current mark is a sleeping crescent moon.
 - Voice: warm, close, Venezuelan Spanish, "tú".
-- The owner wants the site dynamic, smooth and with strong personality.
+- The owner wants the site smooth and calm, in the spirit of Apple's product pages: lots of space, clean type, little visual noise. A busy, ornamental style (the kinetic "cromointerferencia" floor) was tried and rejected.
+- The colour palette is switchable from /admin (Luna, Lavanda, Durazno, Noche), all derived from the brand colours.
 
 ## Evidence on Hand
 

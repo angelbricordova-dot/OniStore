@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { slats } from "@/lib/slats";
 
 const CYCLE = 90; // minutos por ciclo de sueño, en promedio
 const FALL_ASLEEP = 15; // minutos que tardamos en dormirnos
@@ -73,12 +72,10 @@ export function NightPlanner() {
   const best = plan.options[mode === "alarma" ? 0 : 1];
 
   return (
-    <section className="planner" id="suenometro" aria-labelledby="planner-title">
+    <section className="planner" id="tu-noche" aria-labelledby="planner-title">
       <div className="planner__intro">
-        <h2 id="planner-title" className="h2" data-reveal>
-          Tu noche,
-          <br />
-          en ciclos
+        <h2 id="planner-title" className="title" data-reveal>
+          Tu noche, en ciclos.
         </h2>
         <p data-reveal>
           Dormimos en ciclos de unos 90 minutos. Despertar cuando uno termina, y no a la mitad, es la diferencia entre
@@ -138,7 +135,7 @@ export function NightPlanner() {
           <div className="night__bar">
             <span className="night__seg night__seg--fall" style={{ flexGrow: FALL_ASLEEP }} />
             {CYCLE_COLORS.map((c, i) => (
-              <span key={i} className="night__seg slats" style={{ flexGrow: CYCLE, ...slats(c), "--i": i } as React.CSSProperties} />
+              <span key={i} className="night__seg" style={{ flexGrow: CYCLE, background: c[1], "--i": i } as React.CSSProperties} />
             ))}
           </div>
           {plan.marks.map((m) => (
@@ -169,7 +166,7 @@ export function NightPlanner() {
         </ol>
         <p className="planner__fine">
           Contamos {FALL_ASLEEP} minutos para quedarte dormido. Es una guía para organizar tu noche, no un consejo
-          médico. ¿La luz no te deja apagarte? Un <Link href="/#catalogo">antifaz</Link> ayuda más de lo que crees.
+          médico. ¿La luz no te deja apagarte? Un <Link href="/#coleccion">antifaz</Link> ayuda más de lo que crees.
         </p>
       </div>
     </section>
